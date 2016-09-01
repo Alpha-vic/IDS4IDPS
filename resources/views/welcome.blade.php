@@ -19,7 +19,6 @@
                 font-weight: 100;
                 height: 100vh;
                 margin: 0;
-                list-style: square;
             }
 
             .full-height {
