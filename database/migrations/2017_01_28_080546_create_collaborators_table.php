@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateNgosTable extends Migration
+class CreateCollaboratorsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateNgosTable extends Migration
      */
     public function up()
     {
-        Schema::create('ngos', function (Blueprint $table) {
+        Schema::create('collaborators', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 500);
             $table->string('email', 100);
@@ -28,8 +28,8 @@ class CreateNgosTable extends Migration
             $table->charset = 'utf8mb4';
             $table->collation = 'utf8mb4_unicode_ci';
 
-            $table->unique('phone', 'ngos_phone');
-            $table->unique('email', 'ngos_email');
+            $table->unique('phone', 'collaborators_phone');
+            $table->unique('email', 'collaborators_email');
         });
     }
 
@@ -40,6 +40,6 @@ class CreateNgosTable extends Migration
      */
     public function down()
     {
-        Schema::drop('ngos');
+        Schema::drop('collaborators');
     }
 }
