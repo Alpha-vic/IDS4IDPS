@@ -9,7 +9,17 @@
 | to using a Closure or controller method. Build something great!
 |
 */
-//-------------Base Routes------------------------------------------------
+//------------ Generic App-Page Routes -----------------------------------------
+Route::group(['as'=>'app.','namespace'=>'Pages'], function (){
+    Route::get('/',['as'=>'home','uses'=>'HomeController@index']);
+});
+
+//------------ Admin Panel Routes ----------------------------------------------
+Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Pages'], function () {
+    Route::get('camps', ['as'=>'camps','uses'=>'AdminController@camps']);
+});
+
+//-------------Base Routes-----------------------------------------------------
 Route::group(['as' => 'user.', 'prefix' => 'user', 'namespace' => 'Base'], function () {
     Route::post('add', ['as' => 'add', 'uses' => 'UserController@add']);
     Route::post('update', ['as' => 'update', 'uses' => 'UserController@update']);
@@ -40,9 +50,28 @@ Route::group(['as' => 'idp.', 'prefix' => 'idp', 'namespace' => 'Base'], functio
     Route::post('remove', ['as' => 'remove', 'uses' => 'PersonController@remove']);
 });
 
-//------------ Admin Panel Routes ----------------------------------------------
-Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Pages'], function () {
-    Route::get('camps', ['as'=>'camps','uses'=>'AdminController@camps']);
+//-------------Authentication, Registration & Password Reset roues-----------------//
+Route::group(['as' => 'auth.', 'namespace' => 'Auth'], function () {
+    // Authentication Routes...
+    Route::get('login', ['as' => 'login', 'uses' => 'LoginController@showLoginForm']);
+    Route::post('login', ['as' => 'login', 'uses' => 'LoginController@login']);
+    Route::post('logout', ['as' => 'logout', 'uses' => 'LoginController@logout']);
+
+    // Registration Routes...
+    /*
+    Route::get('signup', ['as' => 'signup', 'uses' => 'RegisterController@showRegistrationForm']);
+    Route::post('signup', ['as' => 'signup', 'uses' => 'RegisterController@register']);
+    */
+
+    // Password Reset Routes...
+    Route::get('password/reset', ['as' => 'password.form', 'uses' => 'ForgotPasswordController@showLinkRequestForm']);
+    Route::post('password/email', ['as' => 'password.email', 'uses' => 'ForgotPasswordController@sendResetLinkEmail']);
+    Route::get('password/reset/{token}', ['as' => 'password.link', 'uses' => 'ResetPasswordController@showResetForm']);
+    Route::post('password/reset', ['as' => 'password.reset', 'uses' => 'ResetPasswordController@reset']);
+
+    // Socialite
+    Route::get('auth/{service}/{action}', ['as' => 'social.redirect', 'uses' => 'SocialAuthController@redirectToProvider']);
+    Route::get('auth/{service}/{action}/callback', ['as' => 'social.callback', 'uses' => 'SocialAuthController@handleProviderCallback']);
 });
 
 //------------ For troubleshooting purposes and  testing purposes --------------

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Helpers\Traits\AuthRedirectPath;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\Request;
 
 class ResetPasswordController extends Controller
 {
@@ -18,15 +20,41 @@ class ResetPasswordController extends Controller
     |
     */
 
-    use ResetsPasswords;
+    use ResetsPasswords, AuthRedirectPath {
+        AuthRedirectPath::redirectPath insteadof ResetsPasswords;
+    }
 
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
         $this->middleware('guest');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function sendResetResponse($response)
+    {
+        if (request()->wantsJson()) {
+            return ['status' => true, 'message' => trans($response), 'redirectTo'=>$this->redirectPath()];
+        }
+
+        return redirect($this->redirectPath())->with('status', trans($response));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function sendResetFailedResponse(Request $request, $response)
+    {
+        if ($request->wantsJson()) {
+            return ['status' => false, 'message' => trans($response)];
+        }
+
+        return redirect()->back()
+                         ->withInput($request->only('email'))
+                         ->withErrors(['email' => trans($response)]);
     }
 }
