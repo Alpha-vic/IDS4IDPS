@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCollaboratorsTable extends Migration
+class CreateOrganizationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateCollaboratorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('collaborators', function (Blueprint $table) {
+        Schema::create('organizations', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 500);
             $table->string('email', 100);
@@ -40,6 +40,6 @@ class CreateCollaboratorsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('collaborators');
+        Schema::drop('organizations');
     }
 }

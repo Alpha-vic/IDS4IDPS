@@ -15,7 +15,6 @@ class CreateUsersTable extends Migration {
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('slug', 190);
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('middle_name')->nullable();
@@ -33,7 +32,6 @@ class CreateUsersTable extends Migration {
             $table->charset = 'utf8mb4';
             $table->collation = 'utf8mb4_unicode_ci';
 
-            $table->unique('slug', 'users_slug');
             $table->unique('email', 'users_email');
         });
     }
