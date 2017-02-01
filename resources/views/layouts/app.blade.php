@@ -15,6 +15,7 @@
 
     <!-- Styles -->
     <link href="{{asset('css/app.css')}}" rel="stylesheet">
+    <link href="{{asset('css/app-support.css')}}" rel="stylesheet">
 
     <!-- Scripts -->
     <script>
@@ -32,7 +33,12 @@
 <form id="logout-form" action="{{ route('auth.logout') }}" method="POST" style="display: none;">
     {{ csrf_field() }}
 </form>
-
+<script type="text/javascript">
+    $('#logout-button').click(function () {
+      event.preventDefault();
+      $('#logout-form').submit();
+    });
+</script>
 @yield('extra_scripts')
 </body>
 </html>

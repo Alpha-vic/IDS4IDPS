@@ -9,14 +9,27 @@
 | to using a Closure or controller method. Build something great!
 |
 */
-//------------ Generic App-Page Routes -----------------------------------------
-Route::group(['as'=>'app.','namespace'=>'Pages'], function (){
-    Route::get('/',['as'=>'home','uses'=>'HomeController@index']);
-});
+Route::group(['namespace' => 'Pages'], function () {
+    //------------ Generic App-Page Routes -----------------------------------------
+    Route::group(['as' => 'app.'], function () {
+        Route::get('/', ['as' => 'home', 'uses' => 'HomeController@index']);
+    });
 
-//------------ Admin Panel Routes ----------------------------------------------
-Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Pages'], function () {
-    Route::get('camps', ['as'=>'camps','uses'=>'AdminController@camps']);
+    //------------ Admin Panel Page Routes ----------------------------------------------
+    Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
+        Route::get('persons', ['as' => 'persons', 'uses' => 'AdminController@persons']);
+        Route::get('camps', ['as' => 'camps', 'uses' => 'AdminController@camps']);
+        Route::get('organizations', ['as' => 'organizations', 'uses' => 'AdminController@organizations']);
+        Route::get('users', ['as' => 'users', 'uses' => 'AdminController@users']);
+        Route::get('locations', ['as' => 'locations', 'uses' => 'AdminController@locations']);
+        Route::get('settings', ['as' => 'settings', 'uses' => 'AdminController@settings']);
+        Route::get('sys_log', ['as' => 'sys_log', 'uses' => 'AdminController@sysLog']);
+    });
+
+    Route::group(['as' => 'account.', 'prefix' => 'account'], function () {
+        Route::get('profile', ['as' => 'profile', 'uses' => 'AccountController@profile']);
+        Route::get('password', ['as' => 'password', 'uses' => 'AccountController@password']);
+    });
 });
 
 //-------------Base Routes-----------------------------------------------------
