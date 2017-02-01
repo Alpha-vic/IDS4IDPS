@@ -72,20 +72,16 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="f-name" class="col-sm-3 control-label">First Name</label>
-                                <div class="col-sm-9">
+                                <label for="f-name" class="col-sm-3 control-label">Names</label>
+                                <div class="col-sm-3">
                                     <input type="text" maxlength="255" class="form-control" id="f-name" name="first-name" placeholder="First Name">
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="m-name" class="col-sm-3 control-label">Middle Name</label>
-                                <div class="col-sm-9">
+                                <div class="col-sm-3">
+                                    <label for="m-name" class="sr-only">Middle Name</label>
                                     <input type="text" maxlength="255" class="form-control" id="m-name" name="middle-name" placeholder="Middle Name">
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="l-name" class="col-sm-3 control-label">Last Name</label>
-                                <div class="col-sm-9">
+                                <div class="col-sm-3">
+                                    <label for="l-name" class="sr-only">Last Name</label>
                                     <input type="text" maxlength="255" class="form-control" id="l-name" name="last-name" placeholder="Last Name">
                                 </div>
                             </div>
