@@ -2,46 +2,41 @@
 
 /**
  * @param $phone
- * @param $country
+ * @param $country_code
  *
  * @return bool
  */
-function is_phone($phone, $country = 'ng')
+function is_phone($phone, $country_code = '234')
 {
-    $patterns = is_file("phone/{$country}.php") ? require_once "phone/{$country}.php" : [];
+    $mtn = ['803','806','813','816','811','814','703','706','903'];
+    $etisalat = ['809','807','819','817','818','808','708','900','909'];
+    $glo = ['805','815','705','905'];
+    $others = ['802','812','810','701'];
 
-    if (isset($patterns['_code_']) and isset($patterns['carriers'])) {
-        $formats = [];
-        foreach ($patterns['carriers'] as $carrier) {
-            $formats = array_merge($formats, $carrier);
-        }
-
-        foreach ($formats as $format) {
-            if (
-                    preg_match("/^(" . $patterns['_code_'] . ")(" . $format . ")$/", $phone)
-                    or
-                    preg_match("/^(\\+" . $patterns['_code_'] . ")(" . $format . ")$/", $phone)
-            )
-                return true;
-        }
+    $prefixes = array_merge($mtn,$etisalat, $glo, $others);
+    foreach($prefixes as $prefix)
+    {
+        if(
+            preg_match("/^0(".$prefix.")([0-9]{7})$/", $phone)
+            or
+            preg_match("/^(".$country_code.$prefix.")([0-9]{7})$/", $phone)
+            or
+            preg_match("/^(\\+".$country_code.$prefix.")([0-9]{7})$/", $phone)
+        ) return true;
     }
-
     return false;
 }
 
-function normalize_phone($phone, $country = 'ng')
+function normalize_phone($phone, $country_code = '234')
 {
-    /*
-      if (is_phone($phone, $country)) {
-      if (strlen($phone) == 11) {
-      return $country_code.substr($phone, 1);
-      }
-      if (strlen($phone) == 14) {
-      return substr($phone, 1);
-      }
-
-      return $phone;
-      }
-      throw new \Exception("Invalid phone number: {$phone}");
-     */
+    if(is_phone($phone, $country_code)){
+        if(strlen($phone) == 11){
+            return $country_code.substr($phone, 1);
+        }
+        if(strlen($phone) == 14){
+            return substr($phone, 1);
+        }
+        return $phone;
+    }
+    throw new \Exception("Invalid phone number: {$phone}");
 }
