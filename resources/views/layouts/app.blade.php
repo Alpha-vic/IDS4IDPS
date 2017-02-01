@@ -23,7 +23,8 @@
             'csrfToken' => csrf_token(),
         ]); ?>
     </script>
-    <script src="{{asset('js/app.js')}}"></script>
+    <script src="{{asset('js/app.js')}}" type="text/javascript"></script>
+    <script src="{{asset('js/app.utils.js')}}" type="text/javascript"></script>
     <!--Extra-->
     @yield('extra_heads')
 </head>

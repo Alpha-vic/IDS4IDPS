@@ -38,6 +38,7 @@ Route::group(['namespace' => 'Pages'], function () {
     Route::group(['as' => 'account.', 'prefix' => 'account'], function () {
         Route::get('profile', ['as' => 'profile', 'uses' => 'AccountController@profile']);
         Route::get('password', ['as' => 'password', 'uses' => 'AccountController@password']);
+        Route::post('change-image', ['as' => 'profile.image', 'uses' => 'AccountController@changeImage']);
     });
 });
 
