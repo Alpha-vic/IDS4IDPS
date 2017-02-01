@@ -1,10 +1,10 @@
-@extends('layouts.admin');
+@extends('layouts.admin')
 @section('content')
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
                 <h2 class="page-header">
-                    IDP Camps
+                    Locations - States
                     <span class="pull-right">
                         <!-- Split button -->
                         <div class="btn-group btn-group-sm">
@@ -31,9 +31,9 @@
                 <thead>
                 <tr>
                     <th width="5%">#</th>
-                    <th width="10%">Code</th>
+                    <th width="15%">State Code</th>
                     <th>Name</th>
-                    <th width="25%">Address</th>
+                    <th width="15%">LGAs</th>
                     <th width="5%">&hellip;</th>
                 </tr>
                 </thead>

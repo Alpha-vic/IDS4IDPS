@@ -1,12 +1,18 @@
 <?php
 namespace App\Models;
+
+use App\Models\Traits\FindByCode;
+
 /**
  * Class LGA
+ *
  * @package App\Models
  */
 class LGA extends Model
 {
-    protected $fillable = ['name','code', 'state_id'];
+    use FindByCode;
+
+    protected $fillable = ['name', 'code', 'state_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -26,6 +32,7 @@ class LGA extends Model
 
     /**
      * Persons with this LGA as their LGA of origin
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function persons()

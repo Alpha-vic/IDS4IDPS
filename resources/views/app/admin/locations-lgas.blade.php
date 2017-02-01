@@ -1,11 +1,14 @@
-@extends('layouts.admin');
+@extends('layouts.admin')
 @section('content')
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
                 <h2 class="page-header">
-                    IDP Camps
+                    Locations - LGAs
                     <span class="pull-right">
+                        <a class="btn btn-sm btn-default" href="{{route('admin.locations_states')}}">
+                            <span class="glyphicon glyphicon-step-backward"></span> Back
+                        </a>
                         <!-- Split button -->
                         <div class="btn-group btn-group-sm">
                             <button type="button" class="btn btn-primary">New Record</button>
@@ -31,9 +34,8 @@
                 <thead>
                 <tr>
                     <th width="5%">#</th>
-                    <th width="10%">Code</th>
+                    <th width="15%">LGA Code</th>
                     <th>Name</th>
-                    <th width="25%">Address</th>
                     <th width="5%">&hellip;</th>
                 </tr>
                 </thead>
@@ -41,7 +43,6 @@
                 @for($sn=1; $sn<15; ++$sn)
                     <tr>
                         <td>{{$sn}}</td>
-                        <td>---</td>
                         <td>---</td>
                         <td>---</td>
                         <td>---</td>

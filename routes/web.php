@@ -21,7 +21,8 @@ Route::group(['namespace' => 'Pages'], function () {
         Route::get('camps', ['as' => 'camps', 'uses' => 'AdminController@camps']);
         Route::get('organizations', ['as' => 'organizations', 'uses' => 'AdminController@organizations']);
         Route::get('users', ['as' => 'users', 'uses' => 'AdminController@users']);
-        Route::get('locations', ['as' => 'locations', 'uses' => 'AdminController@locations']);
+        Route::get('locations-states', ['as' => 'locations_states', 'uses' => 'AdminController@locations_states']);
+        Route::get('locations-lgas/{state_code}', ['as' => 'locations_lgas', 'uses' => 'AdminController@locations_lgas']);
         Route::get('settings', ['as' => 'settings', 'uses' => 'AdminController@settings']);
         Route::get('sys_log', ['as' => 'sys_log', 'uses' => 'AdminController@sysLog']);
     });

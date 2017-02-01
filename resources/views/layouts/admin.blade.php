@@ -1,4 +1,11 @@
 @extends('layouts.app')
+@section('extra_heads')
+    <style type="text/css">
+        body {
+            padding-top: 50px;
+        }
+    </style>
+@endsection
 @section('body')
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
@@ -16,7 +23,7 @@
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar-admin-top">
-                <form class="navbar-form navbar-left">
+                <form class="navbar-form navbar-left hidden-sm">
                     <div class="input-group input-group-sm">
                         <input type="text" class="form-control" placeholder="Search for...">
                         <span class="input-group-btn">
@@ -36,8 +43,8 @@
                             More &hellip; <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="{{route('admin.locations')}}">Locations</a></li>
-                            <li><a href="{{route('admin.settings')}}">Settings</a></li>
+                            <li><a href="{{route('admin.locations_states')}}">Locations</a></li>
+                            <li><a href="{{route('admin.settings')}}">App. Settings</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="{{route('admin.sys_log')}}">Sys. Logs</a></li>
                         </ul>
@@ -45,6 +52,7 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                            <span class="hidden-lg hidden-md hidden-sm">My Account</span>
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">

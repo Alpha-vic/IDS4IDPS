@@ -1,11 +1,16 @@
 <?php
 namespace App\Models;
+
+use App\Models\Traits\FindByCode;
+
 /**
  * Class State
  * @package App\Models
  */
 class State extends Model
 {
+    use FindByCode;
+
     protected $fillable = ['code', 'name'];
 
     /**

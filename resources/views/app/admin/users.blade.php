@@ -4,11 +4,11 @@
         <div class="row">
             <div class="col-xs-12">
                 <h2 class="page-header">
-                    IDP Camps
+                    App. Users
                     <span class="pull-right">
                         <!-- Split button -->
                         <div class="btn-group btn-group-sm">
-                            <button type="button" class="btn btn-primary">New Record</button>
+                            <button type="button" class="btn btn-primary">New User</button>
                             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false">
                                 &nbsp;<span class="caret"></span>
@@ -31,9 +31,9 @@
                 <thead>
                 <tr>
                     <th width="5%">#</th>
-                    <th width="10%">Code</th>
-                    <th>Name</th>
-                    <th width="25%">Address</th>
+                    <th>Names</th>
+                    <th width="25%">Email</th>
+                    <th width="20%">Phone</th>
                     <th width="5%">&hellip;</th>
                 </tr>
                 </thead>
