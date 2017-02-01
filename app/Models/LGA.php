@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use App\Models\Traits\FindByCode;
+use App\Models\Traits\SoftDeletes;
 
 /**
  * Class LGA
@@ -11,8 +12,10 @@ use App\Models\Traits\FindByCode;
 class LGA extends Model
 {
     use FindByCode;
+    use SoftDeletes;
 
     protected $fillable = ['name', 'code', 'state_id'];
+    protected $table = 'lgas';
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

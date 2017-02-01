@@ -56,4 +56,14 @@ trait PersonalNames
         $this->attributes['middle_name'] = trim($str);
     }
 
+    public function name($with_middle_name = true)
+    {
+        $name = $this->first_name;
+        if (!empty($this->middle_name) and $with_middle_name) {
+            $name .= " {$this->middle_name}";
+        }
+        $name .= " {$this->last_name}";
+
+        return $name;
+    }
 }

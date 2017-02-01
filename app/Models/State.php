@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use App\Models\Traits\FindByCode;
+use App\Models\Traits\SoftDeletes;
 
 /**
  * Class State
@@ -10,6 +11,7 @@ use App\Models\Traits\FindByCode;
 class State extends Model
 {
     use FindByCode;
+    use SoftDeletes;
 
     protected $fillable = ['code', 'name'];
 
@@ -26,7 +28,7 @@ class State extends Model
      */
     public function camps()
     {
-        return $this->hasManyThrough(Camp::class, LGA::class);
+        return $this->hasManyThrough(Camp::class, LGA::class, 'state_id','lga_id');
     }
 
     /**
