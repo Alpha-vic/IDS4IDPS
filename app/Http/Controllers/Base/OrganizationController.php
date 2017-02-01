@@ -2,8 +2,33 @@
 namespace App\Http\Controllers\Base;
 
 use App\Http\Controllers\Controller;
+use App\Models\Organization;
+use Illuminate\Http\Request;
 
 class OrganizationController extends Controller
 {
+    public function add(Request $request)
+    {
+        $in = $request->input();
+        if (empty($in['name']) or !is_email($in['email']) or !is_phone($in['phone']) or empty($in['address'])) {
+            return ['status' => false, 'message' => 'Invalid Data Set'];
+        }
+        if (is_object($u1 = Organization::findByEmail($in['email']))) {
+            return ['status' => false, 'message' => 'Email already in use by another organization.'];
+        }
+        $PHONE = normalize_phone($in['phone']);
+        if (is_object($u1 = Organization::findByPhone($PHONE))) {
+            return ['status' => false, 'message' => 'Phone number already in use by another organization.'];
+        }
+        $organization = Organization::create([
+            'name' => $in['name'],
+            'email' => $in['email'],
+            'phone' => $PHONE,
+            'address' => $in['address'],
+            'website' => $in['website']
+        ]);
+
+        return ['status' => true, 'message' => 'Organization added successfully'];
+    }
 
 }

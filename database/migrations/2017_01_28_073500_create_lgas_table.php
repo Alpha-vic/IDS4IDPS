@@ -25,7 +25,6 @@ class CreateLgasTable extends Migration
             $table->charset = 'utf8mb4';
             $table->collation = 'utf8mb4_unicode_ci';
 
-            $table->unique('code', 'states_code');
             $table->foreign('state_id', 'lgas_state_id')->references('id')->on('states')->onDelete('cascade')->onUpdate('cascade');
         });
     }

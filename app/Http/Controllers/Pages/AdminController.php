@@ -2,12 +2,21 @@
 namespace App\Http\Controllers\Pages;
 
 use App\Http\Controllers\Controller;
+use App\Models\Camp;
+use App\Models\LGA;
+use App\Models\Organization;
+use App\Models\Role;
+use App\Models\State;
+use App\Models\User;
 
 class AdminController extends Controller
 {
     public function camps()
     {
-        return view('app.admin.camps');
+        $lgas = LGA::orderBy('state_id')->get();
+        $camps = Camp::withTrashed()->get();
+
+        return view('app.admin.camps', ['lgas' => $lgas, 'camps' => $camps]);
     }
 
     public function persons()
@@ -17,21 +26,34 @@ class AdminController extends Controller
 
     public function organizations()
     {
-        return view('app.admin.organizations');
+        $organizations = Organization::withTrashed()->get();
+
+        return view('app.admin.organizations', ['organizations' => $organizations]);
     }
 
     public function users()
     {
-        return view('app.admin.users');
+        $users = User::withTrashed()->get();
+        $roles = Role::all();
+
+        return view('app.admin.users', ['users' => $users, 'roles' => $roles]);
     }
 
     public function locations_states()
     {
-        return view('app.admin.locations-states');
+        $states = State::withTrashed()->get();
+
+        return view('app.admin.locations-states', ['states' => $states]);
     }
 
     public function locations_lgas($state_code)
     {
-        return view('app.admin.locations-lgas');
+        if (is_object($state = State::findByCode($state_code))) {
+            $lgas = LGA::withTrashed()->where('state_id', $state->id)->get();
+
+            return view('app.admin.locations-lgas', ['state' => $state, 'lgas' => $lgas]);
+        }
+
+        return abort(404);
     }
 }

@@ -33,6 +33,7 @@ class CreateUsersTable extends Migration {
             $table->collation = 'utf8mb4_unicode_ci';
 
             $table->unique('email', 'users_email');
+            $table->unique('phone', 'users_phone');
         });
     }
 

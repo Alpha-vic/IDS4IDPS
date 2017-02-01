@@ -38,15 +38,16 @@
                 </tr>
                 </thead>
                 <tbody>
-                @for($sn=1; $sn<15; ++$sn)
-                    <tr>
-                        <td>{{$sn}}</td>
-                        <td>---</td>
-                        <td>---</td>
-                        <td>---</td>
+                <?php $sn = 1; ?>
+                @foreach($organizations as $org)
+                    <tr @if($org->trashed()) class="warning" @endif >
+                        <td>{{$sn++}}</td>
+                        <td>{{$org->name}}</td>
+                        <td>{{$org->email}}</td>
+                        <td>{{$org->phone}}</td>
                         <td>---</td>
                     </tr>
-                @endfor
+                @endforeach
                 </tbody>
             </table>
         </div>
@@ -67,25 +68,27 @@
                                 <label for="name" class="col-sm-3 control-label">Name</label>
                                 <div class="col-sm-9">
                                     <input type="text" maxlength="255" class="form-control" id="name" name="name"
-                                           placeholder="Official name of the organization">
+                                           placeholder="Official name of the organization" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="email" class="col-sm-3 control-label">Email</label>
                                 <div class="col-sm-9">
-                                    <input type="email" maxlength="255" class="form-control" id="email" name="email" placeholder="name@domain.com">
+                                    <input type="email" maxlength="255" class="form-control" id="email" name="email" placeholder="name@domain.com"
+                                           required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="phone" class="col-sm-3 control-label">Phone</label>
                                 <div class="col-sm-9">
-                                    <input type="tel" maxlength="255" class="form-control" id="phone" name="phone" placeholder="+234 xxx xxx xxxx">
+                                    <input type="tel" maxlength="255" class="form-control" id="phone" name="phone" placeholder="+234 xxx xxx xxxx"
+                                           required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="address" class="col-sm-3 control-label">Address</label>
                                 <div class="col-sm-9">
-                                    <textarea rows="3" class="form-control" id="address" name="address"></textarea>
+                                    <textarea rows="3" class="form-control" id="address" name="address" required></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -96,6 +99,7 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="text-center padding-1em"><span id="notify"></span></div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -107,5 +111,31 @@
     </div>
 @endsection
 @section('extra_scripts')
-
+    <script type="text/javascript">
+      $(function () {
+        var $this = $('#newOrgForm');
+        var NP = $('#notify');
+        $this.submit(function (e) {
+          e.preventDefault();
+          $('button[type=submit]', $this).attr('disabled', true);
+          ajaxCall({
+            url: $this.prop('action'),
+            method: "POST",
+            data: $this.serialize(),
+            onSuccess: function (response) {
+              notify(NP, response);
+              if (response.status == true) {
+                window.location.reload();
+              }
+            },
+            onFailure: function (xhr) {
+              handleHttpErrors(xhr, $this, '#notify');
+            },
+            onComplete: function () {
+              $('button[type=submit]', $this).removeAttr('disabled');
+            }
+          });
+        });
+      });
+    </script>
 @endsection

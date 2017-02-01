@@ -32,21 +32,22 @@
                 <tr>
                     <th width="5%">#</th>
                     <th>Names</th>
-                    <th width="25%">Email</th>
-                    <th width="20%">Phone</th>
+                    <th width="20%">Email</th>
+                    <th width="15%">Phone</th>
                     <th width="5%">&hellip;</th>
                 </tr>
                 </thead>
                 <tbody>
-                @for($sn=1; $sn<15; ++$sn)
-                    <tr>
-                        <td>{{$sn}}</td>
-                        <td>---</td>
-                        <td>---</td>
-                        <td>---</td>
+                <?php $sn = 1; ?>
+                @foreach($users as $user)
+                    <tr @if($user->trashed()) class="warning" @endif >
+                        <td>{{$sn++}}</td>
+                        <td>{{$user->name()}}</td>
+                        <td>{{$user->email}}</td>
+                        <td>{{$user->phone}}</td>
                         <td>---</td>
                     </tr>
-                @endfor
+                @endforeach
                 </tbody>
             </table>
         </div>
@@ -66,15 +67,18 @@
                             <div class="form-group">
                                 <label for="role" class="col-sm-3 control-label">Role</label>
                                 <div class="col-sm-9">
-                                    <select class="form-control" id="role" name="role">
-                                        <option>Admin</option>
+                                    <select class="form-control" id="role" name="role" required>
+                                        @foreach($roles as $role)
+                                            <option value="{{$role->id}}">{{$role->label}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="f-name" class="col-sm-3 control-label">Names</label>
                                 <div class="col-sm-3">
-                                    <input type="text" maxlength="255" class="form-control" id="f-name" name="first-name" placeholder="First Name">
+                                    <input type="text" maxlength="255" class="form-control" id="f-name" name="first-name" placeholder="First Name"
+                                           required>
                                 </div>
                                 <div class="col-sm-3">
                                     <label for="m-name" class="sr-only">Middle Name</label>
@@ -82,35 +86,40 @@
                                 </div>
                                 <div class="col-sm-3">
                                     <label for="l-name" class="sr-only">Last Name</label>
-                                    <input type="text" maxlength="255" class="form-control" id="l-name" name="last-name" placeholder="Last Name">
+                                    <input type="text" maxlength="255" class="form-control" id="l-name" name="last-name" placeholder="Last Name"
+                                           required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="email" class="col-sm-3 control-label">Email</label>
                                 <div class="col-sm-9">
-                                    <input type="email" maxlength="255" class="form-control" id="email" name="email" placeholder="name@domain.com">
+                                    <input type="email" maxlength="255" class="form-control" id="email" name="email" placeholder="name@domain.com"
+                                           required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="phone" class="col-sm-3 control-label">Phone</label>
                                 <div class="col-sm-9">
-                                    <input type="tel" maxlength="255" class="form-control" id="phone" name="phone" placeholder="+234 xxx xxx xxxx">
+                                    <input type="tel" maxlength="255" class="form-control" id="phone" name="phone" placeholder="+234 xxx xxx xxxx"
+                                           required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="password" class="col-sm-3 control-label">Password</label>
                                 <div class="col-sm-9">
-                                    <input type="password" maxlength="255" class="form-control" id="password" name="password">
+                                    <input type="password" maxlength="255" class="form-control" id="password" name="password" required
+                                           autocomplete="off">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="password_confirmation" class="col-sm-3 control-label">Password Confirmation</label>
                                 <div class="col-sm-9">
                                     <input type="password" maxlength="255" class="form-control" id="password_confirmation"
-                                           name="password_confirmation">
+                                           name="password_confirmation" required autocomplete="off">
                                 </div>
                             </div>
                         </div>
+                        <div class="text-center padding-1em"><span id="notify"></span></div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -122,5 +131,31 @@
     </div>
 @endsection
 @section('extra_scripts')
-
+    <script type="text/javascript">
+      $(function () {
+        var $this = $('#newUserForm');
+        var NP = $('#notify');
+        $this.submit(function (e) {
+          e.preventDefault();
+          $('button[type=submit]', $this).attr('disabled', true);
+          ajaxCall({
+            url: $this.prop('action'),
+            method: "POST",
+            data: $this.serialize(),
+            onSuccess: function (response) {
+              notify(NP, response);
+              if (response.status == true) {
+                window.location.reload();
+              }
+            },
+            onFailure: function (xhr) {
+              handleHttpErrors(xhr, $this, '#notify');
+            },
+            onComplete: function () {
+              $('button[type=submit]', $this).removeAttr('disabled');
+            }
+          });
+        });
+      });
+    </script>
 @endsection

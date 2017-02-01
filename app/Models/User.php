@@ -1,6 +1,8 @@
 <?php
 namespace App\Models;
 
+use App\Models\Traits\FindByEmail;
+use App\Models\Traits\FindByPhone;
 use App\Models\Traits\ModelHelpers;
 use App\Models\Traits\PersonalNames;
 use App\Models\Traits\Photo;
@@ -17,6 +19,8 @@ class User extends Base implements Authenticatable
     use SoftDeletes;
     use Photo;
     use PersonalNames;
+    use FindByPhone;
+    use FindByEmail;
 
     const ROLE_ADMIN    = 'admin';
     const ROLE_ACADEMIA = 'de-officer';
@@ -60,13 +64,10 @@ class User extends Base implements Authenticatable
     public function abilities()
     {
         $abilities = collect();
-        foreach ($this->roles as $role)
-        {
+        foreach ($this->roles as $role) {
             $abs = Role::all()->find($role->id)->abilities;
-            foreach ($abs as $ab)
-            {
-                if (!$abilities->contains($ab->key))
-                {
+            foreach ($abs as $ab) {
+                if (!$abilities->contains($ab->key)) {
                     $abilities->put($ab->key, $ab);
                 }
             }
@@ -81,10 +82,8 @@ class User extends Base implements Authenticatable
     public function hasAllAbilities()
     {
         $user_abilities = $this->abilities();
-        foreach ($user_abilities as $u_a)
-        {
-            if ($u_a->key === '*')
-            {
+        foreach ($user_abilities as $u_a) {
+            if ($u_a->key === '*') {
                 return true;
             }
         }
@@ -99,35 +98,13 @@ class User extends Base implements Authenticatable
      */
     public function hasAbility($ability)
     {
-        foreach ($this->abilities() as $u_a)
-        {
-            if ($u_a->key === '*' || strcasecmp($u_a->key, $ability) === 0)
-            {
+        foreach ($this->abilities() as $u_a) {
+            if ($u_a->key === '*' || strcasecmp($u_a->key, $ability) === 0) {
                 return true;
             }
         }
 
         return false;
-    }
-
-    /**
-     * @param $email
-     *
-     * @return mixed
-     */
-    public static function findByEmail($email)
-    {
-        return self::findByColumn('email', $email)->first();
-    }
-
-    /**
-     * @param $phone
-     *
-     * @return mixed
-     */
-    public static function findByPhone($phone)
-    {
-        return self::findByColumn('phone', $phone)->first();
     }
 
     /**

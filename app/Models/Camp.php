@@ -1,7 +1,13 @@
 <?php
 namespace App\Models;
+use App\Models\Traits\FindByCode;
+use App\Models\Traits\SoftDeletes;
+
 class Camp extends Model
 {
+    use FindByCode;
+    use SoftDeletes;
+
     protected $fillable = ['name', 'address', 'longitude', 'latitude', 'code', 'lga_id'];
     protected $appends  = ['state'];
 

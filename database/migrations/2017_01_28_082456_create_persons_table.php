@@ -20,7 +20,8 @@ class CreatePersonsTable extends Migration
             $table->string('last_name');
             $table->date('birth_date');
             $table->char('sex',1);
-            $table->decimal('height');
+            $table->decimal('height')->nullable();
+            $table->decimal('blood_group')->nullable();
             $table->string('photo', 2000)->nullable();
             $table->string('email', 100)->nullable();
             $table->string('phone', 15)->nullable();

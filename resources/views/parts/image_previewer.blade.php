@@ -37,11 +37,13 @@
                 </p>
                 <div class="divider"></div>
                 <!--loader-->
-                <?php
-                $loader_id = 'up-loader';
-                $loader_text = 'Crunching image...<br/>'
-                    .'<span class="msg" hidden>This sometimes takes a while, please be patient.</span>';
-                ?>
+                <div class="text-center">
+                    <?php
+                    $loader_id = 'up-loader';
+                    $loader_text = 'Crunching image...<br/>'
+                        .'<span class="msg" hidden>This sometimes takes a while, please be patient.</span>';
+                    ?>
+                </div>
                 @include('parts.loader')
                 <p class="text-center">
                     <button class="btn btn-success" id="save"><span class="glyphicon glyphicon-record"></span> Save</button>
