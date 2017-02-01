@@ -11,7 +11,7 @@
                         </a>
                         <!-- Split button -->
                         <div class="btn-group btn-group-sm">
-                            <button type="button" class="btn btn-primary">New Record</button>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newLgaModal">New LGA</button>
                             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false">
                                 &nbsp;<span class="caret"></span>
@@ -52,4 +52,49 @@
             </table>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="newLgaModal" tabindex="-1" role="dialog" aria-labelledby="modal-title">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <form onsubmit="return false;" id="newLgaForm" action="{{route('location.add_lga')}}">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="modal-title">Add New Location - LGA</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label for="l-name" class="col-sm-3 control-label">Name</label>
+                                <div class="col-sm-9">
+                                    <input type="text" maxlength="255" class="form-control" id="l-name" name="l-name" placeholder="LGA Name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="l-state" class="col-sm-3 control-label">State</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control" id="l-state" name="l-state">
+                                        <option>State 1</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="l-code" class="col-sm-3 control-label">Code</label>
+                                <div class="col-sm-9">
+                                    <input type="text" maxlength="4" class="form-control" id="l-code" name="l-code" placeholder="LGA Code">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+@endsection
+@section('extra_scripts')
+
 @endsection

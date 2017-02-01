@@ -12,7 +12,8 @@
 Route::group(['namespace' => 'Pages'], function () {
     //------------ Generic App-Page Routes -----------------------------------------
     Route::group(['as' => 'app.'], function () {
-        Route::get('/', ['as' => 'home', 'uses' => 'HomeController@index']);
+        Route::get('/', ['as' => 'home', 'uses' => 'AppController@index']);
+        Route::get('enroll', ['as' => 'enroll_idp', 'uses' => 'AppController@enroll']);
     });
 
     //------------ Admin Panel Page Routes ----------------------------------------------
@@ -25,6 +26,13 @@ Route::group(['namespace' => 'Pages'], function () {
         Route::get('locations-lgas/{state_code}', ['as' => 'locations_lgas', 'uses' => 'AdminController@locations_lgas']);
         Route::get('settings', ['as' => 'settings', 'uses' => 'AdminController@settings']);
         Route::get('sys_log', ['as' => 'sys_log', 'uses' => 'AdminController@sysLog']);
+    });
+
+    //------------ Data-Entry-Officer's Panel Page Routes ----------------------------------------------
+    Route::group(['as' => 'deo.', 'prefix' => 'deo'], function () {
+        Route::get('persons', ['as' => 'persons', 'uses' => 'DeoController@persons']);
+        Route::get('camps', ['as' => 'camps', 'uses' => 'DeoController@camps']);
+        Route::get('organizations', ['as' => 'organizations', 'uses' => 'DeoController@organizations']);
     });
 
     Route::group(['as' => 'account.', 'prefix' => 'account'], function () {
@@ -41,9 +49,12 @@ Route::group(['as' => 'user.', 'prefix' => 'user', 'namespace' => 'Base'], funct
 });
 
 Route::group(['as' => 'location.', 'prefix' => 'location', 'namespace' => 'Base'], function () {
-    Route::post('add', ['as' => 'add', 'uses' => 'LocationController@add']);
-    Route::post('update', ['as' => 'update', 'uses' => 'LocationController@update']);
-    Route::post('remove', ['as' => 'remove', 'uses' => 'LocationController@remove']);
+    Route::post('add-state', ['as' => 'add_state', 'uses' => 'LocationController@addState']);
+    Route::post('update-state', ['as' => 'update_state', 'uses' => 'LocationController@updateState']);
+    Route::post('remove-state', ['as' => 'remove_state', 'uses' => 'LocationController@removeState']);
+    Route::post('add-lga', ['as' => 'add_lga', 'uses' => 'LocationController@addLga']);
+    Route::post('update-lga', ['as' => 'update_lga', 'uses' => 'LocationController@updateLga']);
+    Route::post('remove-lga', ['as' => 'remove_lga', 'uses' => 'LocationController@removeLga']);
 });
 
 Route::group(['as' => 'camp.', 'prefix' => 'camp', 'namespace' => 'Base'], function () {
