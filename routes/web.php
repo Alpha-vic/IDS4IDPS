@@ -71,9 +71,10 @@ Route::group(['as' => 'organization.', 'prefix' => 'organization', 'namespace' =
 });
 
 Route::group(['as' => 'idp.', 'prefix' => 'idp', 'namespace' => 'Base'], function () {
-    Route::post('add', ['as' => 'add', 'uses' => 'PersonController@add']);
     Route::post('update', ['as' => 'update', 'uses' => 'PersonController@update']);
+    Route::post('set-photo', ['as' => 'set_photo', 'uses' => 'PersonController@setPhoto']);
     Route::post('remove', ['as' => 'remove', 'uses' => 'PersonController@remove']);
+    Route::post('discard', ['as' => 'discard', 'uses' => 'PersonController@discard']);
 });
 
 //-------------Authentication, Registration & Password Reset roues-----------------//

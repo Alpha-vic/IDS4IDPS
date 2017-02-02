@@ -10,7 +10,7 @@ function previewImage(input, image) {
   }
 }
 
-function initButtons(previewer, prefWidth, prefHeight, saveHandler, modalWindow, input) {
+function initButtons(previewer, prefWidth, prefHeight, saveHandler, modalWindow, input, formDataModifier) {
   $('#zoom-in', modalWindow).click(function () {
     previewer.cropper('zoom', +0.1);
   });
@@ -51,6 +51,9 @@ function initButtons(previewer, prefWidth, prefHeight, saveHandler, modalWindow,
       var canvas = previewer.cropper('getCroppedCanvas', {width: prefWidth, height: prefHeight});
       canvas.toBlob(function (blob) {
         formData.append('image', blob);
+        if(typeof formDataModifier === 'function') {
+          formDataModifier(formData);
+        }
         saveImage(previewer, saveHandler, modalWindow, formData, button);
       });
     } else {
@@ -59,6 +62,9 @@ function initButtons(previewer, prefWidth, prefHeight, saveHandler, modalWindow,
       formData.append('image', image);
       var data = previewer.cropper('getData');
       formData.append('crop', JSON.stringify(data));
+      if(typeof formDataModifier === 'function') {
+        formDataModifier(formData);
+      }
       saveImage(previewer, saveHandler, modalWindow, formData, button);
     }
   });
@@ -79,12 +85,11 @@ function initButtons(previewer, prefWidth, prefHeight, saveHandler, modalWindow,
           if (response.status) {
             previewer.cropper('destroy');
             notify($('#notify'), response);
-            $('#x').toggleClass('grey', 'blue');
             previewer.prop('src', response.data.url);
             $('.btn', modalWindow).prop('disabled', true);
             $('#user-image').prop('src', response.data.url);
             setTimeout(function () {
-              modalWindow.modal('close');
+              modalWindow.modal('hide');
             }, 2000);
           } else {
             notify($('#notify'), response);
