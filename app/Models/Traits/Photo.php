@@ -3,19 +3,17 @@
 namespace App\Models\Traits;
 
 use App\Models\Organization;
-use App\Models\Publisher;
+use App\Models\Person;
 use App\Models\User;
-use App\Models\Category;
-use App\Models\Entry;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Channel;
 
 /**
  * Class GetPhotoUrl
  *
  * @package App\Models\Traits
  */
-trait Photo {
+trait Photo
+{
 
     /**
      * @param $a
@@ -33,11 +31,11 @@ trait Photo {
     public function getPhotoUrl()
     {
         if ($this->hasPhotoOnLD()) {
-            if (!is_file(storage_path('app' . DS . self::IMAGE_DIR . DS . $this->photo))) {
+            if (!is_file(storage_path('app'.DS.self::IMAGE_DIR.DS.$this->photo))) {
                 return $this->defaultPhotoUrl();
             }
 
-            return normalizeUrl(asset(str_replace('public', 'storage', self::IMAGE_DIR) . '/' . $this->photo));
+            return normalizeUrl(asset(str_replace('public', 'storage', self::IMAGE_DIR).'/'.$this->photo));
         }
 
         return $this->photo;
@@ -57,30 +55,21 @@ trait Photo {
         switch (self::class) {
             case User::class :
                 $img = 'user.png';
-                break;
+            break;
+            case Person::class :
+                $img = 'user.png';
+            break;
             case Organization::class :
                 $img = 'organization.png';
-                break;
-            case Publisher::class :
-                $img = 'publisher.png';
-                break;
-            case Category::class :
-                $img = 'tag.png';
-                break;
-            case Entry::class :
-                $img = 'entry.png';
-                break;
-            case Channel::class :
-                $img = 'channel.png';
-                break;
+            break;
         }
 
-        return (env('APP_URL') . '/images/defaults/' . $img);
+        return asset('images/defaults/'.$img);
     }
 
     public function deletePhoto()
     {
-        $photo = storage_path('app' . DS . self::IMAGE_DIR . DS . $this->photo);
+        $photo = storage_path('app'.DS.self::IMAGE_DIR.DS.$this->photo);
         if ($this->hasPhotoOnLD() and is_file($photo)) {
             unlink($photo);
         }
@@ -93,7 +82,7 @@ trait Photo {
 
     public function deleteThumbnail()
     {
-        $thumb = storage_path('app' . DS . self::IMAGE_DIR . DS . 'thumbs' . DS . $this->photo);
+        $thumb = storage_path('app'.DS.self::IMAGE_DIR.DS.'thumbs'.DS.$this->photo);
         if ($this->hasPhotoOnLD() and is_file($thumb)) {
             unlink($thumb);
         }
@@ -101,44 +90,50 @@ trait Photo {
 
     /**
      * Get or Create thumbnail
+     *
      * @param boolean $createNew Force to create new thumbnail
-     * @param string $old Old URL
+     * @param string $old        Old URL
+     *
      * @return string URL of thumbnail. Thumbnail is created if it does not exist
      * else old image URL is returned if conversion failed
      */
     public function getThumbnail($createNew = false, $old = '')
     {
         if ($this->hasPhotoOnLD()) {
-            $destination = storage_path('app' . DS . self::IMAGE_DIR . DS . 'thumbs' . DS . $this->photo);
-            $destLink = normalizeUrl(asset(str_replace('public', 'storage', self::IMAGE_DIR) . '/thumbs/' . $this->photo));
+            $destination = storage_path('app'.DS.self::IMAGE_DIR.DS.'thumbs'.DS.$this->photo);
+            $destLink = normalizeUrl(asset(str_replace('public', 'storage', self::IMAGE_DIR).'/thumbs/'.$this->photo));
             //Return thumbnail if it exists
             if (is_file($destination) && !$createNew) {
                 return $destLink;
             }
 
             //Create new
-            $file = storage_path('app' . DS . self::IMAGE_DIR . DS . $this->photo);
+            $file = storage_path('app'.DS.self::IMAGE_DIR.DS.$this->photo);
             if (is_file($file)) {
                 $max_size = $this instanceof Entry ? 100 : 50;
                 $jpeg_quality = 90;
-                $old = empty($old) ? $old : storage_path('app' . DS . self::IMAGE_DIR . DS . 'thumbs' . DS . $old);
+                $old = empty($old) ? $old : storage_path('app'.DS.self::IMAGE_DIR.DS.'thumbs'.DS.$old);
                 if (is_file($old)) {
                     unlink($old);
                 }
 
                 $url = $this->resize_image($file, $destination, $max_size, $jpeg_quality);
+
                 return $url ? $destLink : $this->getPhotoUrl();
             }
         }
+
         return $this->getPhotoUrl();
     }
 
     /**
      * Proportionally resize image
-     * @param string $source Source image URL
+     *
+     * @param string $source      Source image URL
      * @param string $destination Destination image URL
-     * @param float $max_size Maximum size
-     * @param int $quality Jpeg image quality
+     * @param float $max_size     Maximum size
+     * @param int $quality        Jpeg image quality
+     *
      * @return boolean
      */
     private function resize_image($source, $destination, $max_size, $quality)
@@ -148,7 +143,8 @@ trait Photo {
         if ($image_size_info) {
             $image_width = $image_size_info[0]; //image width
             $image_height = $image_size_info[1]; //image height
-        } else {
+        }
+        else {
             return false;
         }
 
@@ -172,7 +168,8 @@ trait Photo {
             //White background, no transparency
             $trans_colour = imagecolorallocate($new_image, 255, 255, 255);
             imagefill($new_image, 0, 0, $trans_colour);
-        } else {
+        }
+        else {
             //Retain transparency
             imagesavealpha($new_image, true);
             $trans_colour = imagecolorallocatealpha($new_image, 0, 0, 0, 127);
@@ -183,7 +180,8 @@ trait Photo {
         $sourceResource = $this->getImageResource($source);
         if (imagecopyresampled($new_image, $sourceResource, 0, 0, 0, 0, $new_width, $new_height, $image_width, $image_height)) {
             return $this->saveImage($new_image, $destination, $image_size_info['mime'], $quality);
-        } else {
+        }
+        else {
             return false;
         }
     }
@@ -194,7 +192,7 @@ trait Photo {
         if ($width <= 0 || $height <= 0 || is_nan($x) || is_nan($y)) {
             return false;
         }
-        $file = storage_path('app' . DS . self::IMAGE_DIR . DS . $this->photo);
+        $file = storage_path('app'.DS.self::IMAGE_DIR.DS.$this->photo);
         //Create a new true color image
         $new_image = imagecreatetruecolor($width, $height);
         //Retain transparency
@@ -205,23 +203,27 @@ trait Photo {
         $source = $this->getImageResource($file);
         if ($source) {
             if (imagecopyresampled($new_image, $source, 0, 0, $x, $y, $width, $height, $width, $height)) {
-                $dest = storage_path('app' . DS . 'RAM' . DS . self::IMAGE_DIR . DS . $this->photo);
+                $dest = storage_path('app'.DS.'RAM'.DS.self::IMAGE_DIR.DS.$this->photo);
                 if ($this->saveImage($new_image, $dest, getimagesize($file)['mime'], 50)) {
-                    Storage::delete(self::IMAGE_DIR . "/{$this->photo}");
-                    return Storage::move('RAM/' . self::IMAGE_DIR . "/{$this->photo}", self::IMAGE_DIR . "/{$this->photo}");
-                } else {
+                    Storage::delete(self::IMAGE_DIR."/{$this->photo}");
+
+                    return Storage::move('RAM/'.self::IMAGE_DIR."/{$this->photo}", self::IMAGE_DIR."/{$this->photo}");
+                }
+                else {
                     return false;
                 }
             }
         }
+
         return false;
     }
 
     /**
-     * @param resource $source Image resource
+     * @param resource $source    Image resource
      * @param string $destination Destination file
-     * @param string $mime Source mime type
-     * @param int $quality Jpeg quality (for jpeg images)
+     * @param string $mime        Source mime type
+     * @param int $quality        Jpeg quality (for jpeg images)
+     *
      * @return boolean
      */
     private function saveImage($source, $destination, $mime, $quality)
@@ -238,19 +240,22 @@ trait Photo {
         switch (strtolower($mime)) {
             case 'image/png':
                 $ok = imagepng($source, $destination);
-                break; //save png file
+            break; //save png file
             case 'image/gif':
                 $ok = imagegif($source, $destination);
-                break; //save gif file
-            case 'image/jpeg': case 'image/pjpeg': //Save jpg/jpeg file
+            break; //save gif file
+            case 'image/jpeg':
+            case 'image/pjpeg': //Save jpg/jpeg file
                 $ok = imagejpeg($source, $destination, $quality);
-                break; //save jpeg file
-            default: return false;
+            break; //save jpeg file
+            default:
+                return false;
         }
         if ($ok) {
             return $destination;
         }
         unlink($destination);
+
         return false;
     }
 
@@ -262,21 +267,23 @@ trait Photo {
             switch (strtolower($imageInfo['mime'])) {
                 case 'image/png':
                     $sourceResource = imagecreatefrompng($source);
-                    break;
+                break;
                 case 'image/gif':
                     $sourceResource = imagecreatefromgif($source);
-                    break;
-                case 'image/jpeg': case 'image/pjpeg':
+                break;
+                case 'image/jpeg':
+                case 'image/pjpeg':
                     $sourceResource = imagecreatefromjpeg($source);
-                    break;
+                break;
             }
         }
+
         return $sourceResource;
     }
 
     public function checkCropAndSave($path)
     {
-        $current = storage_path('app' . DS . self::IMAGE_DIR . DS . $this->photo);
+        $current = storage_path('app'.DS.self::IMAGE_DIR.DS.$this->photo);
         if ($this->hasPhotoOnLD() and is_file($current)) {
             unlink($current);
             $this->deleteThumbnail();

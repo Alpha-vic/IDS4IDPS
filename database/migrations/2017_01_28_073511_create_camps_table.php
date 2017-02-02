@@ -17,8 +17,8 @@ class CreateCampsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('address');
-            $table->decimal('longitude')->nullable();
-            $table->decimal('latitude')->nullable();
+            $table->float('longitude')->nullable();
+            $table->float('latitude')->nullable();
             $table->string('code', 10);
             $table->unsignedInteger('lga_id');
             $table->nullableTimestamps();

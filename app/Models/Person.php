@@ -2,17 +2,26 @@
 namespace App\Models;
 
 use App\Models\Traits\PersonalNames;
+use App\Models\Traits\Photo;
+use App\Models\Traits\SoftDeletes;
 
 class Person extends Model
 {
     use PersonalNames;
+    use Photo;
+    use SoftDeletes;
 
+    protected $table = 'persons';
     protected $fillable = [
         'first_name', 'middle_name', 'last_name',
         'birth_date', 'sex', 'height', 'photo', 'description',
-        'code', 'lga_id', 'camp_id', 'email', 'phone'
+        'code', 'lga_id', 'camp_id', 'email', 'phone', 'status'
     ];
     protected $appends = ['state'];
+
+    const STATUS_TMP = 0;
+    const STATUS_ENROLLED = 1;
+    const IMAGE_DIR     = 'public'.DS.'idp-photos';
 
     public function relationships()
     {
@@ -26,7 +35,7 @@ class Person extends Model
 
     public function state()
     {
-        return $this->lga->state;
+        return (is_object($this->lga) ? $this->lga->state : null);
     }
 
     public function getStateAttribute()

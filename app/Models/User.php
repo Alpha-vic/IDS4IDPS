@@ -22,9 +22,9 @@ class User extends Base implements Authenticatable
     use FindByPhone;
     use FindByEmail;
 
-    const ROLE_ADMIN    = 'admin';
-    const ROLE_ACADEMIA = 'de-officer';
-    const IMAGE_DIR     = 'public'.DS.'profile-photos';
+    const ROLE_ADMIN = 'admin';
+    const ROLE_DEO   = 'deo';
+    const IMAGE_DIR  = 'public'.DS.'profile-photos';
 
     protected $fillable = ['first_name', 'last_name', 'middle_name', 'email', 'phone', 'password'];
     protected $hidden   = ['password', 'remember_token', 'photo'];

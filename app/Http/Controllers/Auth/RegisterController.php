@@ -154,7 +154,7 @@ use RegistersUsers,
      */
     protected function create(array $data)
     {
-        $role = Role::findByName(User::ROLE_ACADEMIA);
+        $role = Role::findByName(User::ROLE_DEO);
 
         $user = User::create([
                     'first_name' => $data['first_name'],

@@ -15,20 +15,21 @@ class CreatePersonsTable extends Migration
     {
         Schema::create('persons', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('first_name');
-            $table->string('middle_name');
-            $table->string('last_name');
-            $table->date('birth_date');
-            $table->char('sex',1);
+            $table->string('first_name')->nullable();
+            $table->string('middle_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->date('birth_date')->nullable();
+            $table->char('sex',1)->nullable();
             $table->decimal('height')->nullable();
             $table->decimal('blood_group')->nullable();
             $table->string('photo', 2000)->nullable();
             $table->string('email', 100)->nullable();
             $table->string('phone', 15)->nullable();
             $table->text('description')->nullable();
-            $table->string('code', 32);
-            $table->unsignedInteger('lga_id');
-            $table->unsignedInteger('camp_id');
+            $table->string('code', 32)->nullable();
+            $table->unsignedInteger('lga_id')->nullable();
+            $table->unsignedInteger('camp_id')->nullable();
+            $table->unsignedTinyInteger('status');
             $table->nullableTimestamps();
             $table->softDeletes();
 
