@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreatePersonsTable extends Migration
 {
@@ -19,9 +19,9 @@ class CreatePersonsTable extends Migration
             $table->string('middle_name')->nullable();
             $table->string('last_name')->nullable();
             $table->date('birth_date')->nullable();
-            $table->char('sex',1)->nullable();
+            $table->char('sex', 1)->nullable();
             $table->decimal('height')->nullable();
-            $table->decimal('blood_group')->nullable();
+            $table->string('blood_group', 3)->nullable();
             $table->string('photo', 2000)->nullable();
             $table->string('email', 100)->nullable();
             $table->string('phone', 15)->nullable();

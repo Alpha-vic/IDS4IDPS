@@ -88,7 +88,7 @@ $factory->define(Organization::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->company,
         'email' => $faker->email,
-        'phone' => $faker->phoneNumber,
+        'phone' => $faker->numerify('070########'),
         'address' => $faker->address,
         'website' => $faker->url,
         'photo' => Organization::defaultPhotoUrl(),
@@ -125,14 +125,14 @@ $factory->define(Person::class, function (Faker\Generator $faker) {
         'middle_name' => $faker->lastName,
         'last_name' => $faker->lastName,
         'birth_date' => $faker->date('Y-m-d'),
-        'sex' => $faker->randomElements(['M', 'F']),
+        'sex' => $faker->randomElement(['M', 'F']),
         'height' => $faker->randomFloat(2, 0.5, 10),
-        'blood_group' => $faker->randomElements(['A', 'B', 'AB', 'O']),
+        'blood_group' => $faker->randomElement(['A', 'B', 'AB', 'O']),
         'photo' => Person::defaultPhotoUrl(),
         'email' => $faker->email,
-        'phone' => $faker->phoneNumber,
+        'phone' => $faker->numerify('070########'),
         'description' => $faker->realText(500),
-        'code' => $faker->randomAscii,
+        'code' => uniqid(),
         'status' => Person::STATUS_ENROLLED
     ];
 });

@@ -3,6 +3,7 @@ namespace App\Models;
 
 use App\Models\Traits\FindByEmail;
 use App\Models\Traits\FindByPhone;
+use App\Models\Traits\HasRole;
 use App\Models\Traits\ModelHelpers;
 use App\Models\Traits\PersonalNames;
 use App\Models\Traits\Photo;
@@ -21,6 +22,7 @@ class User extends Base implements Authenticatable
     use PersonalNames;
     use FindByPhone;
     use FindByEmail;
+    use HasRole;
 
     const ROLE_ADMIN = 'admin';
     const ROLE_DEO   = 'deo';
@@ -29,83 +31,6 @@ class User extends Base implements Authenticatable
     protected $fillable = ['first_name', 'last_name', 'middle_name', 'email', 'phone', 'password'];
     protected $hidden   = ['password', 'remember_token', 'photo'];
     protected $appends  = ['name', 'photoUrl', 'thumb', 'url', 'isFollowed'];
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class)->withTimestamps();
-    }
-
-    /**
-     * @param Role $role
-     *
-     * @return mixed
-     */
-    public function hasRole(Role $role)
-    {
-        return $this->roles->contains($role);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function isAdmin()
-    {
-        $role = Role::where('name', self::ROLE_ADMIN)->first();
-
-        return $this->hasRole($role);
-    }
-
-    /**
-     * @return \Illuminate\Support\Collection
-     */
-    public function abilities()
-    {
-        $abilities = collect();
-        foreach ($this->roles as $role) {
-            $abs = Role::all()->find($role->id)->abilities;
-            foreach ($abs as $ab) {
-                if (!$abilities->contains($ab->key)) {
-                    $abilities->put($ab->key, $ab);
-                }
-            }
-        }
-
-        return $abilities;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasAllAbilities()
-    {
-        $user_abilities = $this->abilities();
-        foreach ($user_abilities as $u_a) {
-            if ($u_a->key === '*') {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * @param $ability
-     *
-     * @return bool
-     */
-    public function hasAbility($ability)
-    {
-        foreach ($this->abilities() as $u_a) {
-            if ($u_a->key === '*' || strcasecmp($u_a->key, $ability) === 0) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 
     /**
      * @return bool|null

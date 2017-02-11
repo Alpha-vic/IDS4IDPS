@@ -28,7 +28,7 @@ class CreateCampsTable extends Migration
             $table->charset = 'utf8mb4';
             $table->collation = 'utf8mb4_unicode_ci';
 
-            $table->unique('code', 'camps_code');
+            $table->index('code', 'camps_code');
             $table->foreign('lga_id', 'camps_lga_id')->references('id')->on('lgas')->onDelete('restrict')->onUpdate('cascade');
         });
     }

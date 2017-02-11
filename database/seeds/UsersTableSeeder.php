@@ -28,7 +28,7 @@ class UsersTableSeeder extends Seeder
 
         //Creates users with password = secret-password
         $RID = Role::findByName(User::ROLE_DEO)->id;
-        factory(User::class, 5)->create()->each(function (User $user) use ($RID) {
+        factory(User::class, 25)->create()->each(function (User $user) use ($RID) {
             $user->roles()->attach($RID);
         });
     }
