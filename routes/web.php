@@ -18,6 +18,7 @@ Route::group(['namespace' => 'Pages'], function () {
 
     //------------ Admin Panel Page Routes ----------------------------------------------
     Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
+        Route::get('dashboard', ['as' => 'dashboard', 'uses' => 'AdminController@dashboard']);
         Route::get('persons', ['as' => 'persons', 'uses' => 'AdminController@persons']);
         Route::get('camps', ['as' => 'camps', 'uses' => 'AdminController@camps']);
         Route::get('organizations', ['as' => 'organizations', 'uses' => 'AdminController@organizations']);
@@ -30,6 +31,7 @@ Route::group(['namespace' => 'Pages'], function () {
 
     //------------ Data-Entry-Officer's Panel Page Routes ----------------------------------------------
     Route::group(['as' => 'deo.', 'prefix' => 'deo'], function () {
+        Route::get('dashboard', ['as' => 'dashboard', 'uses' => 'DeoController@dashboard']);
         Route::get('persons', ['as' => 'persons', 'uses' => 'DeoController@persons']);
         Route::get('camps', ['as' => 'camps', 'uses' => 'DeoController@camps']);
         Route::get('organizations', ['as' => 'organizations', 'uses' => 'DeoController@organizations']);
@@ -45,8 +47,11 @@ Route::group(['namespace' => 'Pages'], function () {
 //-------------Base Routes-----------------------------------------------------
 Route::group(['as' => 'user.', 'prefix' => 'user', 'namespace' => 'Base'], function () {
     Route::post('add', ['as' => 'add', 'uses' => 'UserController@add']);
-    Route::post('update', ['as' => 'update', 'uses' => 'UserController@update']);
     Route::post('remove', ['as' => 'remove', 'uses' => 'UserController@remove']);
+
+    Route::post('update', ['as' => 'update', 'uses' => 'UserController@update']);
+    Route::post('photo', ['as' => 'photo', 'uses' => 'UserController@setPhoto']);
+    Route::post('change-password', ['as' => 'change_password', 'uses' => 'UserController@changePassword']);
 });
 
 Route::group(['as' => 'location.', 'prefix' => 'location', 'namespace' => 'Base'], function () {
