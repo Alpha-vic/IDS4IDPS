@@ -59,6 +59,9 @@
                             <li><a href="{{route('account.profile')}}">Update Profile</a></li>
                             <li><a href="{{route('account.password')}}">Change Password</a></li>
                             <li role="separator" class="divider"></li>
+                            @if(is_object($user = Auth::user()) and $user->isDeo())
+                                <li><a href="{{route('deo.dashboard')}}">DEO Dashboard</a></li>
+                            @endif
                             <li><a href="#" id="logout-button">Logout</a></li>
                         </ul>
                     </li>
@@ -69,17 +72,5 @@
     <div class="sh-100vh">
         @yield('content')
     </div>
-    <nav class="navbar navbar-default no-margin navbar-static-top">
-        <div class="container">
-            <div id="navbar-admin-bottom">
-                <ul class="nav navbar-nav">
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Credits</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">View on GitHub</a></li>
-                </ul>
-            </div><!-- /.navbar-collapse -->
-        </div><!-- /.container-fluid -->
-    </nav>
+    @include('parts.navbar-footer')
 @endsection

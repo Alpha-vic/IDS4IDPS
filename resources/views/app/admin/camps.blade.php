@@ -38,7 +38,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <?php $sn = 1; ?>
+                <?php $sn = startSN($camps); ?>
                 @foreach($camps as $camp)
                     <tr @if($camp->trashed()) class="warning" @endif >
                         <td>{{$sn++}}</td>
@@ -48,6 +48,9 @@
                         <td>---</td>
                     </tr>
                 @endforeach
+                <tr>
+                    <td colspan="5" class="text-center">{{$camps->links()}}</td>
+                </tr>
                 </tbody>
             </table>
         </div>

@@ -15,7 +15,7 @@
             </div>
         </div>
         <div class="table-responsive">
-            <table class="table table-hover">
+            <table class="table table-hover table-bordered">
                 <thead>
                 <tr>
                     <th width="5%">#</th>
@@ -29,18 +29,22 @@
                 </tr>
                 </thead>
                 <tbody>
-                @for($sn=1; $sn<15; ++$sn)
-                    <tr>
-                        <td>{{$sn}}</td>
-                        <td>---</td>
-                        <td>---</td>
-                        <td>---</td>
-                        <td>---</td>
-                        <td>---</td>
-                        <td>---</td>
+                <?php $sn = startSN($persons); ?>
+                @foreach($persons as $person)
+                    <tr @if($person->trashed()) class="warning" @endif >
+                        <td>{{$sn++}}</td>
+                        <td>{{$person->code}}</td>
+                        <td>{{$person->name()}}</td>
+                        <td>{{$person->sex}}</td>
+                        <td>{{$person->age}}</td>
+                        <td>{{$person->height}}</td>
+                        <td>--</td>
                         <td>---</td>
                     </tr>
-                @endfor
+                @endforeach
+                <tr>
+                    <td colspan="8" class="text-center">{{$persons->links()}}</td>
+                </tr>
                 </tbody>
             </table>
         </div>

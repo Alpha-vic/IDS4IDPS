@@ -7,82 +7,30 @@
             </div>
         </div>
         <div class="table-responsive">
-            <table class="table table-hover">
+            <table class="table table-hover table-bordered">
                 <thead>
                 <tr>
                     <th width="5%">#</th>
                     <th>Name</th>
                     <th width="20%">Email</th>
                     <th width="15%">Phone</th>
-                    <th width="5%">&hellip;</th>
                 </tr>
                 </thead>
                 <tbody>
-                @for($sn=1; $sn<15; ++$sn)
-                    <tr>
-                        <td>{{$sn}}</td>
-                        <td>---</td>
-                        <td>---</td>
-                        <td>---</td>
-                        <td>---</td>
+                <?php $sn = startSN($organizations); ?>
+                @foreach($organizations as $org)
+                    <tr @if($org->trashed()) class="warning" @endif >
+                        <td>{{$sn++}}</td>
+                        <td>{{$org->name}}</td>
+                        <td>{{$org->email}}</td>
+                        <td>{{$org->phone}}</td>
                     </tr>
-                @endfor
+                @endforeach
+                <tr>
+                    <td colspan="5" class="text-center">{{$organizations->links()}}</td>
+                </tr>
                 </tbody>
             </table>
-        </div>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="newOrgModal" tabindex="-1" role="dialog" aria-labelledby="modal-title">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <form onsubmit="return false;" id="newOrgForm" action="{{route('organization.add')}}">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="modal-title">Add New Organization</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-horizontal">
-                            <div class="form-group">
-                                <label for="name" class="col-sm-3 control-label">Name</label>
-                                <div class="col-sm-9">
-                                    <input type="text" maxlength="255" class="form-control" id="name" name="name"
-                                           placeholder="Official name of the organization">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="email" class="col-sm-3 control-label">Email</label>
-                                <div class="col-sm-9">
-                                    <input type="email" maxlength="255" class="form-control" id="email" name="email" placeholder="name@domain.com">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone" class="col-sm-3 control-label">Phone</label>
-                                <div class="col-sm-9">
-                                    <input type="tel" maxlength="255" class="form-control" id="phone" name="phone" placeholder="+234 xxx xxx xxxx">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="address" class="col-sm-3 control-label">Address</label>
-                                <div class="col-sm-9">
-                                    <textarea rows="3" class="form-control" id="address" name="address"></textarea>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="website" class="col-sm-3 control-label">Website URL</label>
-                                <div class="col-sm-9">
-                                    <input type="url" maxlength="2000" class="form-control" id="website" name="website"
-                                           placeholder="http://yourdomain.com">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                </form>
-            </div>
         </div>
     </div>
 @endsection

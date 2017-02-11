@@ -1,3 +1,4 @@
-@extends('layouts.app')
-@section('body')
+@extends('layouts.auth')
+@section('content')
+
 @endsection

@@ -27,7 +27,7 @@
             </div>
         </div>
         <div class="table-responsive">
-            <table class="table table-hover">
+            <table class="table table-hover table-bordered">
                 <thead>
                 <tr>
                     <th width="5%">#</th>
@@ -39,7 +39,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <?php $sn = 1; ?>
+                <?php $sn = startSN($states); ?>
                 @foreach($states as $state)
                     <tr @if($state->trashed()) class="warning" @endif >
                         <td>{{$sn++}}</td>
@@ -50,6 +50,9 @@
                         <td>---</td>
                     </tr>
                 @endforeach
+                <tr>
+                    <td colspan="6" class="text-center">{{$states->links()}}</td>
+                </tr>
                 </tbody>
             </table>
         </div>

@@ -3,7 +3,6 @@
     <style type="text/css">
         body {
             padding-top: 70px;
-            padding-bottom: 70px;
         }
     </style>
 @endsection
@@ -19,43 +18,45 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Brand</a>
+                <a class="navbar-brand" href="{{route('app.home')}}">{{config('app.name')}}</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="auth-navbar">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">Link</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown
-                            <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
-                        </ul>
-                    </li>
-                </ul>
+                @if(!Auth::guest())
+                    @include('parts.main-nav.deo')
+                @else
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="{{route('app.home')}}"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                        <li><a href="{{route('auth.login')}}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    </ul>
+                @endif
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
-
-    <!---Main content-->
-    @yield('content')
-
-    <!--Footer-->
-    <nav class="navbar navbar-default navbar-fixed-bottom">
-        <div class="container">
-            <div id="auth-footer-navbar">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">Link-1</a></li>
-                    <li><a href="#">Link-2</a></li>
-                    <li><a href="#">Link-3</a></li>
-                </ul>
-            </div><!-- /.navbar-collapse -->
-        </div><!-- /.container-fluid -->
-    </nav>
-
+    <div class="sh-90vh">
+        @yield('content')
+    </div>
+    @include('parts.navbar-footer')
+@endsection
+@section('extra_scripts')
+    <script type="text/javascript" src="{{asset('js/backstretch/jquery.backstretch.min.js')}}"></script>
+    <script type="text/javascript">
+      var WIN = $(window);
+      WIN.on('load', function () {
+        if (WIN.width() < 600) {
+          $.backstretch(["{{asset('images/slides/slide-1.jpg')}}"]);
+        }
+        else {
+          $.backstretch([
+              "{{asset('images/slides/slide-1.jpg')}}",
+              "{{asset('images/slides/slide-2.jpg')}}",
+              "{{asset('images/slides/slide-3.jpg')}}",
+              "{{asset('images/slides/slide-4.jpg')}}",
+            ],
+            {duration: 15000, fade: 1500}
+          );
+        }
+      });
+    </script>
 @endsection

@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="table-responsive">
-            <table class="table table-hover">
+            <table class="table table-hover table-bordered">
                 <thead>
                 <tr>
                     <th width="5%">#</th>
@@ -40,7 +40,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <?php $sn = 1; ?>
+                <?php $sn = startSN($lgas); ?>
                 @foreach($lgas as $lga)
                     <tr @if($lga->trashed()) class="warning" @endif >
                         <td>{{$sn++}}</td>
@@ -49,6 +49,9 @@
                         <td>---</td>
                     </tr>
                 @endforeach
+                <tr>
+                    <td colspan="4" class="text-center">{{$lgas->links()}}</td>
+                </tr>
                 </tbody>
             </table>
         </div>

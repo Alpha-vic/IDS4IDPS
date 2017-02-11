@@ -234,7 +234,7 @@
             onSuccess: function (response) {
               notify(NP, response);
               if (response.status == true) {
-                //ToDO
+                window.location = '<?= route('deo.persons'); ?>';
               }
             },
             onFailure: function (xhr) {
@@ -253,7 +253,7 @@
       var modalWindow = $('#image-editor');
       var handlerUrl = '<?= route('idp.set_photo') ?>';
       var prefWidth = 400;
-      var prefHeight = 600;
+      var prefHeight = 400;
 
       input.change(function () {
         previewImage(this, previewer);

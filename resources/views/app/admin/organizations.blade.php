@@ -27,7 +27,7 @@
             </div>
         </div>
         <div class="table-responsive">
-            <table class="table table-hover">
+            <table class="table table-hover table-bordered">
                 <thead>
                 <tr>
                     <th width="5%">#</th>
@@ -38,7 +38,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <?php $sn = 1; ?>
+                <?php $sn = startSN($organizations); ?>
                 @foreach($organizations as $org)
                     <tr @if($org->trashed()) class="warning" @endif >
                         <td>{{$sn++}}</td>
@@ -48,6 +48,9 @@
                         <td>---</td>
                     </tr>
                 @endforeach
+                <tr>
+                    <td colspan="5" class="text-center">{{$organizations->links()}}</td>
+                </tr>
                 </tbody>
             </table>
         </div>

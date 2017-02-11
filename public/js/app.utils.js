@@ -391,23 +391,23 @@ function notify(pane, response, style) {
     clearTimeout(handle);
   }
 
-  //Remove *-text classes
+  //Remove text-* classes
   pane.removeClass(function (index, css) {
-    return (css.match(/(^|\s)\w+-text/g) || []).join(' ');
+    return (css.match(/(^|\s)\text-w+/g) || []).join(' ');
   });
   if (typeof (response['message']) !== 'undefined') {
     pane.html(response['message']);
-    pane.addClass((typeof (response['mode']) !== 'undefined') ?
+    pane.attr('class', (typeof (response['mode']) !== 'undefined') ?
       'text' + response.mode :
       (response['status'] === true ? 'text-success bg-success' : 'text-danger bg-danger'));
   } else {
     pane.html(toString(response));
-    pane.addClass((typeof style === 'undefined') ? 'text-warning bg-warning' : style);
+    pane.attr('class', (typeof style === 'undefined') ? 'text-warning bg-warning' : style);
   }
   pane.show();
   pane.prop('data-timer', setTimeout(function () {
     pane.hide();
-  }, 15000));
+  }, 7000));
 }
 
 function Semaphore() {
