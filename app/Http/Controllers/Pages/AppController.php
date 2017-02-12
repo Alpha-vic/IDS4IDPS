@@ -18,9 +18,9 @@ class AppController extends Controller
 
     public function enroll(Request $request)
     {
-        $camps = Camp::all();
-        $states = State::all();
-        $lgas = LGA::all();
+        $camps = Camp::orderBy('name')->get();
+        $states = State::orderBy('name')->get();
+        $lgas = LGA::orderBy('state_id')->orderBy('name')->get();
         $IDP = $this->findOrCreateIdpProfile($request);
 
         return response()->view('app.enroll', [

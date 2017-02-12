@@ -2,7 +2,7 @@
 @section('extra_heads')
     <style type="text/css">
         body {
-            padding-top: 50px;
+            padding-top: 70px;
         }
     </style>
 @endsection
