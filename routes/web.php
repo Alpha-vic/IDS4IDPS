@@ -13,73 +13,78 @@ Route::group(['namespace' => 'Pages'], function () {
     //------------ Generic App-Page Routes -----------------------------------------
     Route::group(['as' => 'app.'], function () {
         Route::get('/', ['as' => 'home', 'uses' => 'AppController@index']);
-        Route::get('enroll', ['as' => 'enroll_idp', 'uses' => 'AppController@enroll']);
+        Route::get('enroll', ['as' => 'enroll_idp', 'uses' => 'AppController@enroll'])->middleware(['deo' => 'auth.deo']);
     });
 
-    //------------ Admin Panel Page Routes ----------------------------------------------
-    Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
-        Route::get('dashboard', ['as' => 'dashboard', 'uses' => 'AdminController@dashboard']);
-        Route::get('persons', ['as' => 'persons', 'uses' => 'AdminController@persons']);
-        Route::get('camps', ['as' => 'camps', 'uses' => 'AdminController@camps']);
-        Route::get('organizations', ['as' => 'organizations', 'uses' => 'AdminController@organizations']);
-        Route::get('users', ['as' => 'users', 'uses' => 'AdminController@users']);
-        Route::get('locations-states', ['as' => 'locations_states', 'uses' => 'AdminController@locations_states']);
-        Route::get('locations-lgas/{state_code}', ['as' => 'locations_lgas', 'uses' => 'AdminController@locations_lgas']);
-        Route::get('settings', ['as' => 'settings', 'uses' => 'AdminController@settings']);
-        Route::get('sys_log', ['as' => 'sys_log', 'uses' => 'AdminController@sysLog']);
-    });
+    Route::group(['middleware' => ['auth' => 'auth']], function () {
+        //------------ Admin Panel Page Routes ----------------------------------------------
+        Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => ['admin' => 'auth.admin']], function () {
+            Route::get('dashboard', ['as' => 'dashboard', 'uses' => 'AdminController@dashboard']);
+            Route::get('persons', ['as' => 'persons', 'uses' => 'AdminController@persons']);
+            Route::get('camps', ['as' => 'camps', 'uses' => 'AdminController@camps']);
+            Route::get('organizations', ['as' => 'organizations', 'uses' => 'AdminController@organizations']);
+            Route::get('users', ['as' => 'users', 'uses' => 'AdminController@users']);
+            Route::get('locations-states', ['as' => 'locations_states', 'uses' => 'AdminController@locations_states']);
+            Route::get('locations-lgas/{state_code}', ['as' => 'locations_lgas', 'uses' => 'AdminController@locations_lgas']);
+            Route::get('settings', ['as' => 'settings', 'uses' => 'AdminController@settings']);
+            Route::get('sys_log', ['as' => 'sys_log', 'uses' => 'AdminController@sysLog']);
+        });
 
-    //------------ Data-Entry-Officer's Panel Page Routes ----------------------------------------------
-    Route::group(['as' => 'deo.', 'prefix' => 'deo'], function () {
-        Route::get('dashboard', ['as' => 'dashboard', 'uses' => 'DeoController@dashboard']);
-        Route::get('persons', ['as' => 'persons', 'uses' => 'DeoController@persons']);
-        Route::get('camps', ['as' => 'camps', 'uses' => 'DeoController@camps']);
-        Route::get('organizations', ['as' => 'organizations', 'uses' => 'DeoController@organizations']);
-    });
+        //------------ Data-Entry-Officer's Panel Page Routes ----------------------------------------------
+        Route::group(['as' => 'deo.', 'prefix' => 'deo', 'middleware' => ['admin' => 'auth.deo']], function () {
+            Route::get('dashboard', ['as' => 'dashboard', 'uses' => 'DeoController@dashboard']);
+            Route::get('persons', ['as' => 'persons', 'uses' => 'DeoController@persons']);
+            Route::get('camps', ['as' => 'camps', 'uses' => 'DeoController@camps']);
+            Route::get('organizations', ['as' => 'organizations', 'uses' => 'DeoController@organizations']);
+        });
 
-    Route::group(['as' => 'account.', 'prefix' => 'account'], function () {
-        Route::get('profile', ['as' => 'profile', 'uses' => 'AccountController@profile']);
-        Route::get('password', ['as' => 'password', 'uses' => 'AccountController@password']);
-        Route::post('change-image', ['as' => 'profile.image', 'uses' => 'AccountController@changeImage']);
+        Route::group(['as' => 'account.', 'prefix' => 'account'], function () {
+            Route::get('profile', ['as' => 'profile', 'uses' => 'AccountController@profile']);
+            Route::get('password', ['as' => 'password', 'uses' => 'AccountController@password']);
+            Route::post('change-image', ['as' => 'profile.image', 'uses' => 'AccountController@changeImage']);
+        });
     });
 });
 
 //-------------Base Routes-----------------------------------------------------
-Route::group(['as' => 'user.', 'prefix' => 'user', 'namespace' => 'Base'], function () {
-    Route::post('add', ['as' => 'add', 'uses' => 'UserController@add']);
-    Route::post('update', ['as' => 'update', 'uses' => 'UserController@update']);
-    Route::post('set-photo', ['as' => 'photo', 'uses' => 'UserController@setPhoto']);
-    Route::post('change-password', ['as' => 'change_password', 'uses' => 'UserController@changePassword']);
-    Route::post('manage-list', ['as' => 'manage_list', 'uses' => 'UserController@manageList']);
-});
+Route::group(['middleware' => ['auth' => 'auth'], 'namespace' => 'Base'], function () {
+    Route::group(['as' => 'user.', 'prefix' => 'user'], function () {
+        Route::post('update', ['as' => 'update', 'uses' => 'UserController@update']);
+        Route::post('set-photo', ['as' => 'photo', 'uses' => 'UserController@setPhoto']);
+        Route::post('change-password', ['as' => 'change_password', 'uses' => 'UserController@changePassword']);
+        Route::group(['middleware' => ['admin' => 'auth.admin']], function () {
+            Route::post('add', ['as' => 'add', 'uses' => 'UserController@add']);
+            Route::post('manage-list', ['as' => 'manage_list', 'uses' => 'UserController@manageList']);
+        });
+    });
 
-Route::group(['as' => 'location.', 'prefix' => 'location', 'namespace' => 'Base'], function () {
-    Route::post('add-state', ['as' => 'add_state', 'uses' => 'LocationController@addState']);
-    Route::post('update-state', ['as' => 'update_state', 'uses' => 'LocationController@updateState']);
-    Route::post('manage-states', ['as' => 'manage_state_list', 'uses' => 'LocationController@manageStateList']);
-    Route::post('add-lga', ['as' => 'add_lga', 'uses' => 'LocationController@addLga']);
-    Route::post('update-lga', ['as' => 'update_lga', 'uses' => 'LocationController@updateLga']);
-    Route::post('manage-lgas', ['as' => 'manage_lga_list', 'uses' => 'LocationController@manageLgaList']);
-});
+    Route::group(['as' => 'location.', 'prefix' => 'location', 'middleware' => ['admin' => 'auth.admin']], function () {
+        Route::post('add-state', ['as' => 'add_state', 'uses' => 'LocationController@addState']);
+        Route::post('update-state', ['as' => 'update_state', 'uses' => 'LocationController@updateState']);
+        Route::post('manage-states', ['as' => 'manage_state_list', 'uses' => 'LocationController@manageStateList']);
+        Route::post('add-lga', ['as' => 'add_lga', 'uses' => 'LocationController@addLga']);
+        Route::post('update-lga', ['as' => 'update_lga', 'uses' => 'LocationController@updateLga']);
+        Route::post('manage-lgas', ['as' => 'manage_lga_list', 'uses' => 'LocationController@manageLgaList']);
+    });
 
-Route::group(['as' => 'camp.', 'prefix' => 'camp', 'namespace' => 'Base'], function () {
-    Route::post('add', ['as' => 'add', 'uses' => 'CampController@add']);
-    Route::post('update', ['as' => 'update', 'uses' => 'CampController@update']);
-    Route::post('manage-list', ['as' => 'manage_list', 'uses' => 'CampController@manageList']);
-});
+    Route::group(['as' => 'camp.', 'prefix' => 'camp', 'middleware' => ['admin' => 'auth.admin']], function () {
+        Route::post('add', ['as' => 'add', 'uses' => 'CampController@add']);
+        Route::post('update', ['as' => 'update', 'uses' => 'CampController@update']);
+        Route::post('manage-list', ['as' => 'manage_list', 'uses' => 'CampController@manageList']);
+    });
 
-Route::group(['as' => 'organization.', 'prefix' => 'organization', 'namespace' => 'Base'], function () {
-    Route::post('add', ['as' => 'add', 'uses' => 'OrganizationController@add']);
-    Route::post('update', ['as' => 'update', 'uses' => 'OrganizationController@update']);
-    Route::post('manage-list', ['as' => 'manage_list', 'uses' => 'OrganizationController@manageList']);
-});
+    Route::group(['as' => 'organization.', 'prefix' => 'organization', 'middleware' => ['admin' => 'auth.admin']], function () {
+        Route::post('add', ['as' => 'add', 'uses' => 'OrganizationController@add']);
+        Route::post('update', ['as' => 'update', 'uses' => 'OrganizationController@update']);
+        Route::post('manage-list', ['as' => 'manage_list', 'uses' => 'OrganizationController@manageList']);
+    });
 
-Route::group(['as' => 'idp.', 'prefix' => 'idp', 'namespace' => 'Base'], function () {
-    Route::post('update', ['as' => 'update', 'uses' => 'PersonController@update']);
-    Route::post('set-photo', ['as' => 'set_photo', 'uses' => 'PersonController@setPhoto']);
-    Route::post('remove', ['as' => 'remove', 'uses' => 'PersonController@remove']);
-    Route::post('discard', ['as' => 'discard', 'uses' => 'PersonController@discard']);
-    Route::post('manage-list', ['as' => 'manage_list', 'uses' => 'PersonController@manageList']);
+    Route::group(['as' => 'idp.', 'prefix' => 'idp', 'middleware' => ['admin' => 'auth.deo']], function () {
+        Route::post('update', ['as' => 'update', 'uses' => 'PersonController@update']);
+        Route::post('set-photo', ['as' => 'set_photo', 'uses' => 'PersonController@setPhoto']);
+        Route::post('discard', ['as' => 'discard', 'uses' => 'PersonController@discard']);
+        Route::post('manage-list', ['as' => 'manage_list', 'uses' => 'PersonController@manageList']);
+    });
 });
 
 //-------------Authentication, Registration & Password Reset roues-----------------//
@@ -87,7 +92,7 @@ Route::group(['as' => 'auth.', 'namespace' => 'Auth'], function () {
     // Authentication Routes...
     Route::get('login', ['as' => 'login', 'uses' => 'LoginController@showLoginForm']);
     Route::post('login', ['as' => 'login', 'uses' => 'LoginController@login']);
-    Route::post('logout', ['as' => 'logout', 'uses' => 'LoginController@logout']);
+    Route::post('logout', ['as' => 'logout', 'uses' => 'LoginController@logout'])->middleware('auth');
 
     // Registration Routes...
     /*
