@@ -35,10 +35,17 @@
     {{ csrf_field() }}
 </form>
 <script type="text/javascript">
+  $(function () {
     $('#logout-button').click(function () {
       event.preventDefault();
       $('#logout-form').submit();
     });
+
+    $(".toggle-btn").click(function () {
+      var checkBoxes = $($(this).attr('data-toggle'));
+      checkBoxes.prop("checked", !checkBoxes.prop("checked"));
+    });
+  });
 </script>
 @yield('extra_scripts')
 </body>

@@ -43,7 +43,7 @@ trait ModelHelpers
      */
     public static function findByColumn($column, $value)
     {
-        return self::where($column, $value);
+        return self::withTrashed()->where($column, $value);
     }
 
     /**

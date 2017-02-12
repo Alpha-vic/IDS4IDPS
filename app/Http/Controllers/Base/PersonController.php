@@ -49,4 +49,46 @@ class PersonController extends Controller
 
         return ['status' => false, 'message' => 'Invalid request.'];
     }
+
+    public function manageList(Request $request)
+    {
+        $this->validate($request, ['action' => 'required', 'id' => 'required|array'], ['id.required' => 'Select 1 or more items']);
+
+        $in = $request->input();
+
+        switch ($in['action']) {
+            case 'delete':
+                $count = $this->deleteObjects($in['id']);
+
+                return ['status' => true, 'message' => $count.' IDPs Deleted'];
+            break;
+            case 'restore':
+                $count = $this->restoreObjects($in['id']);
+
+                return ['status' => true, 'message' => $count.' IDPs Restored'];
+            break;
+            case 'discard':
+                $count = $this->forceDeleteObjects($in['id']);
+
+                return ['status' => true, 'message' => $count.' IDPs Deleted Permanently.'];
+            break;
+        }
+
+        return ['status' => false, 'message' => 'Invalid Request.'];
+    }
+
+    private function deleteObjects(array $ids)
+    {
+        return Person::whereIn('id', $ids)->delete();
+    }
+
+    private function restoreObjects(array $ids)
+    {
+        return Person::whereIn('id', $ids)->restore();
+    }
+
+    private function forceDeleteObjects(array $ids)
+    {
+        return Person::whereIn('id', $ids)->forceDelete();
+    }
 }

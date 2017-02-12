@@ -1,11 +1,13 @@
-@extends('layouts.admin');
+@extends('layouts.admin')
 @section('content')
     <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <h2 class="page-header">
-                    App. Users
-                    <span class="pull-right">
+        <form action="{{route('user.manage_list')}}" method="post" id="manageList" onsubmit="return false;">
+            <input name="action" value="" type="hidden">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2 class="page-header">
+                        App. Users
+                        <span class="pull-right">
                         <!-- Split button -->
                         <div class="btn-group btn-group-sm">
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newUserModal">New User</button>
@@ -14,46 +16,55 @@
                                 &nbsp;<span class="caret"></span>
                                 <span class="sr-only">Toggle Dropdown</span>
                             </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#" class="disabled small">with selected...</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">Delete</a></li>
-                                <li><a href="#">Restore</a></li>
-                                <li><a href="#">Delete Permanently</a></li>
-                            </ul>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="disabled small">with selected...</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li>
+                                <button type="submit" value="delete" class="btn-link">Delete</button>
+                            </li>
+                            <li>
+                                <button type="submit" value="restore" class="btn-link">Restore</button>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li>
+                                <button type="submit" value="discard" class="btn-link">Delete Permanently</button>
+                            </li>
+                        </ul>
                         </div>
                     </span>
-                </h2>
+                    </h2>
+                </div>
             </div>
-        </div>
-        <div class="table-responsive">
-            <table class="table table-hover table-bordered">
-                <thead>
-                <tr>
-                    <th width="5%">#</th>
-                    <th>Names</th>
-                    <th width="20%">Email</th>
-                    <th width="15%">Phone</th>
-                    <th width="5%">&hellip;</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php $sn = startSN($users); ?>
-                @foreach($users as $user)
-                    <tr @if($user->trashed()) class="warning" @endif >
-                        <td>{{$sn++}}</td>
-                        <td>{{$user->name()}}</td>
-                        <td>{{$user->email}}</td>
-                        <td>{{$user->phone}}</td>
-                        <td>---</td>
+            <div class="text-center padding-1em"><span id="notify"></span></div>
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th width="5%">#</th>
+                        <th>Names</th>
+                        <th width="20%">Email</th>
+                        <th width="15%">Phone</th>
+                        <th width="3%"><input type="checkbox" class="toggle-btn" data-toggle="input.togglable"></th>
                     </tr>
-                @endforeach
-                <tr>
-                    <td colspan="5" class="text-center">{{$users->links()}}</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                    <?php $sn = startSN($users); ?>
+                    @foreach($users as $user)
+                        <tr @if($user->trashed()) class="warning" @endif >
+                            <td>{{$sn++}}</td>
+                            <td>{{$user->name()}}</td>
+                            <td>{{$user->email}}</td>
+                            <td>{{$user->phone}}</td>
+                            <td><input name="id[]" type="checkbox" value="{{$user->id}}" class="togglable"></td>
+                        </tr>
+                    @endforeach
+                    <tr>
+                        <td colspan="5" class="text-center">{{$users->links()}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
     </div>
 
     <!-- Modal -->
@@ -134,17 +145,18 @@
     </div>
 @endsection
 @section('extra_scripts')
+    <script type="text/javascript" src="{{asset('js/app.list-manager.js')}}"></script>
     <script type="text/javascript">
       $(function () {
-        var $this = $('#newUserForm');
-        var NP = $('#notify');
-        $this.submit(function (e) {
+        var $newUserForm = $('#newUserForm');
+        var NP = $('#notify', $newUserForm);
+        $newUserForm.submit(function (e) {
           e.preventDefault();
-          $('button[type=submit]', $this).attr('disabled', true);
+          $('button[type=submit]', $newUserForm).attr('disabled', true);
           ajaxCall({
-            url: $this.prop('action'),
+            url: $newUserForm.prop('action'),
             method: "POST",
-            data: $this.serialize(),
+            data: $newUserForm.serialize(),
             onSuccess: function (response) {
               notify(NP, response);
               if (response.status == true) {
@@ -152,10 +164,10 @@
               }
             },
             onFailure: function (xhr) {
-              handleHttpErrors(xhr, $this, '#notify');
+              handleHttpErrors(xhr, $newUserForm, '#notify');
             },
             onComplete: function () {
-              $('button[type=submit]', $this).removeAttr('disabled');
+              $('button[type=submit]', $newUserForm).removeAttr('disabled');
             }
           });
         });

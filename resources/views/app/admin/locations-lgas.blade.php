@@ -1,15 +1,17 @@
 @extends('layouts.admin')
 @section('content')
     <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <h2 class="page-header">
-                    Locations - LGAs in {{$state->name}}
-                    <span class="pull-right">
+        <form action="{{route('location.manage_lga_list')}}" method="post" id="manageList" onsubmit="return false;">
+            <input name="action" value="" type="hidden">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2 class="page-header">
+                        Locations - LGAs in {{$state->name}}
+                        <span class="pull-right">
                         <a class="btn btn-sm btn-default" href="{{route('admin.locations_states')}}">
                             <span class="glyphicon glyphicon-step-backward"></span> Back
                         </a>
-                        <!-- Split button -->
+                            <!-- Split button -->
                         <div class="btn-group btn-group-sm">
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newLgaModal">New LGA</button>
                             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
@@ -20,41 +22,50 @@
                             <ul class="dropdown-menu">
                                 <li><a href="#" class="disabled small">with selected...</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li><a href="#">Delete</a></li>
-                                <li><a href="#">Restore</a></li>
-                                <li><a href="#">Delete Permanently</a></li>
+                                <li>
+                                    <button type="submit" value="delete" class="btn-link">Delete</button>
+                                </li>
+                                <li>
+                                    <button type="submit" value="restore" class="btn-link">Restore</button>
+                                </li>
+                                <li role="separator" class="divider"></li>
+                                <li>
+                                    <button type="submit" value="discard" class="btn-link">Delete Permanently</button>
+                                </li>
                             </ul>
                         </div>
                     </span>
-                </h2>
+                    </h2>
+                </div>
             </div>
-        </div>
-        <div class="table-responsive">
-            <table class="table table-hover table-bordered">
-                <thead>
-                <tr>
-                    <th width="5%">#</th>
-                    <th width="15%">LGA Code</th>
-                    <th>Name</th>
-                    <th width="5%">&hellip;</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php $sn = startSN($lgas); ?>
-                @foreach($lgas as $lga)
-                    <tr @if($lga->trashed()) class="warning" @endif >
-                        <td>{{$sn++}}</td>
-                        <td>{{$lga->code}}</td>
-                        <td>{{$lga->name}}</td>
-                        <td>---</td>
+            <div class="text-center padding-1em"><span id="notify"></span></div>
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th width="5%">#</th>
+                        <th width="15%">LGA Code</th>
+                        <th>Name</th>
+                        <th width="3%"><input type="checkbox" class="toggle-btn" data-toggle="input.togglable"></th>
                     </tr>
-                @endforeach
-                <tr>
-                    <td colspan="4" class="text-center">{{$lgas->links()}}</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                    <?php $sn = startSN($lgas); ?>
+                    @foreach($lgas as $lga)
+                        <tr @if($lga->trashed()) class="warning" @endif >
+                            <td>{{$sn++}}</td>
+                            <td>{{$lga->code}}</td>
+                            <td>{{$lga->name}}</td>
+                            <td><input name="id[]" type="checkbox" value="{{$lga->id}}" class="togglable"></td>
+                        </tr>
+                    @endforeach
+                    <tr>
+                        <td colspan="4" class="text-center">{{$lgas->links()}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
     </div>
 
     <!-- Modal -->
@@ -101,6 +112,7 @@
     </div>
 @endsection
 @section('extra_scripts')
+    <script type="text/javascript" src="{{asset('js/app.list-manager.js')}}"></script>
     <script type="text/javascript">
       $(function () {
         var $this = $('#newLgaForm');

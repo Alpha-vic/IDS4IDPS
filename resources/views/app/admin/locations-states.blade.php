@@ -1,11 +1,13 @@
 @extends('layouts.admin')
 @section('content')
     <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <h2 class="page-header">
-                    Locations - States
-                    <span class="pull-right">
+        <form action="{{route('location.manage_state_list')}}" method="post" id="manageList" onsubmit="return false;">
+            <input name="action" value="" type="hidden">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2 class="page-header">
+                        Locations - States
+                        <span class="pull-right">
                         <!-- Split button -->
                         <div class="btn-group btn-group-sm">
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newStateModal">Add State</button>
@@ -17,45 +19,54 @@
                             <ul class="dropdown-menu">
                                 <li><a href="#" class="disabled small">with selected...</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li><a href="#">Delete</a></li>
-                                <li><a href="#">Restore</a></li>
-                                <li><a href="#">Delete Permanently</a></li>
+                                <li>
+                                    <button type="submit" value="delete" class="btn-link">Delete</button>
+                                </li>
+                                <li>
+                                    <button type="submit" value="restore" class="btn-link">Restore</button>
+                                </li>
+                                <li role="separator" class="divider"></li>
+                                <li>
+                                    <button type="submit" value="discard" class="btn-link">Delete Permanently</button>
+                                </li>
                             </ul>
                         </div>
                     </span>
-                </h2>
+                    </h2>
+                </div>
             </div>
-        </div>
-        <div class="table-responsive">
-            <table class="table table-hover table-bordered">
-                <thead>
-                <tr>
-                    <th width="5%">#</th>
-                    <th width="15%">State Code</th>
-                    <th>Name</th>
-                    <th width="10%">LGAs</th>
-                    <th width="10%">Camps</th>
-                    <th width="5%">&hellip;</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php $sn = startSN($states); ?>
-                @foreach($states as $state)
-                    <tr @if($state->trashed()) class="warning" @endif >
-                        <td>{{$sn++}}</td>
-                        <td>{{$state->code}}</td>
-                        <td>{{$state->name}}</td>
-                        <td><a href="{{route('admin.locations_lgas',['state_code'=>$state->code])}}">{{count($state->lgas)}}</a></td>
-                        <td>{{count($state->camps)}}</td>
-                        <td>---</td>
+            <div class="text-center padding-1em"><span id="notify"></span></div>
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th width="5%">#</th>
+                        <th width="15%">State Code</th>
+                        <th>Name</th>
+                        <th width="10%">LGAs</th>
+                        <th width="10%">Camps</th>
+                        <th width="3%"><input type="checkbox" class="toggle-btn" data-toggle="input.togglable"></th>
                     </tr>
-                @endforeach
-                <tr>
-                    <td colspan="6" class="text-center">{{$states->links()}}</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                    <?php $sn = startSN($states); ?>
+                    @foreach($states as $state)
+                        <tr @if($state->trashed()) class="warning" @endif >
+                            <td>{{$sn++}}</td>
+                            <td>{{$state->code}}</td>
+                            <td>{{$state->name}}</td>
+                            <td><a href="{{route('admin.locations_lgas',['state_code'=>$state->code])}}">{{count($state->lgas)}}</a></td>
+                            <td>{{count($state->camps)}}</td>
+                            <td><input name="id[]" type="checkbox" value="{{$state->id}}" class="togglable"></td>
+                        </tr>
+                    @endforeach
+                    <tr>
+                        <td colspan="6" class="text-center">{{$states->links()}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
     </div>
 
     <!-- Modal -->
@@ -95,17 +106,18 @@
     </div>
 @endsection
 @section('extra_scripts')
+    <script type="text/javascript" src="{{asset('js/app.list-manager.js')}}"></script>
     <script type="text/javascript">
       $(function () {
-        var $this = $('#newStateForm');
-        var NP = $('#notify');
-        $this.submit(function (e) {
+        var $newStateForm = $('#newStateForm');
+        var NP = $('#notify', $newStateForm);
+        $newStateForm.submit(function (e) {
           e.preventDefault();
-          $('button[type=submit]', $this).attr('disabled', true);
+          $('button[type=submit]', $newStateForm).attr('disabled', true);
           ajaxCall({
-            url: $this.prop('action'),
+            url: $newStateForm.prop('action'),
             method: "POST",
-            data: $this.serialize(),
+            data: $newStateForm.serialize(),
             onSuccess: function (response) {
               notify(NP, response);
               if (response.status == true) {
@@ -113,10 +125,10 @@
               }
             },
             onFailure: function (xhr) {
-              handleHttpErrors(xhr, $this, '#notify');
+              handleHttpErrors(xhr, $newStateForm, '#notify');
             },
             onComplete: function () {
-              $('button[type=submit]', $this).removeAttr('disabled');
+              $('button[type=submit]', $newStateForm).removeAttr('disabled');
             }
           });
         });

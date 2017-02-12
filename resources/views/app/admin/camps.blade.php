@@ -1,11 +1,13 @@
-@extends('layouts.admin');
+@extends('layouts.admin')
 @section('content')
     <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <h2 class="page-header">
-                    IDP Camps
-                    <span class="pull-right">
+        <form action="{{route('camp.manage_list')}}" method="post" id="manageList" onsubmit="return false;">
+            <input name="action" value="" type="hidden">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2 class="page-header">
+                        IDP Camps
+                        <span class="pull-right">
                         <!-- Split button -->
                         <div class="btn-group btn-group-sm">
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newCampModal">New Camp</button>
@@ -14,46 +16,53 @@
                                 &nbsp;<span class="caret"></span>
                                 <span class="sr-only">Toggle Dropdown</span>
                             </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#" class="disabled small">with selected...</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">Delete</a></li>
-                                <li><a href="#">Restore</a></li>
-                                <li><a href="#">Delete Permanently</a></li>
-                            </ul>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <button type="submit" value="delete" class="btn-link">Delete</button>
+                            </li>
+                            <li>
+                                <button type="submit" value="restore" class="btn-link">Restore</button>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li>
+                                <button type="submit" value="discard" class="btn-link">Delete Permanently</button>
+                            </li>
+                        </ul>
                         </div>
                     </span>
-                </h2>
+                    </h2>
+                </div>
             </div>
-        </div>
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th width="5%">#</th>
-                    <th width="10%">Code</th>
-                    <th>Name</th>
-                    <th width="25%">Address</th>
-                    <th width="5%">&hellip;</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php $sn = startSN($camps); ?>
-                @foreach($camps as $camp)
-                    <tr @if($camp->trashed()) class="warning" @endif >
-                        <td>{{$sn++}}</td>
-                        <td>{{$camp->code}}</td>
-                        <td>{{$camp->name}}</td>
-                        <td>{{$camp->address}}</td>
-                        <td>---</td>
+            <div class="text-center padding-1em"><span id="notify"></span></div>
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th width="5%">#</th>
+                        <th width="10%">Code</th>
+                        <th>Name</th>
+                        <th width="25%">Address</th>
+                        <th width="3%"><input type="checkbox" class="toggle-btn" data-toggle="input.togglable"></th>
                     </tr>
-                @endforeach
-                <tr>
-                    <td colspan="5" class="text-center">{{$camps->links()}}</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                    <?php $sn = startSN($camps); ?>
+                    @foreach($camps as $camp)
+                        <tr @if($camp->trashed()) class="warning" @endif >
+                            <td>{{$sn++}}</td>
+                            <td>{{$camp->code}}</td>
+                            <td>{{$camp->name}}</td>
+                            <td>{{$camp->address}}</td>
+                            <td><input name="id[]" type="checkbox" value="{{$camp->id}}" class="togglable"></td>
+                        </tr>
+                    @endforeach
+                    <tr>
+                        <td colspan="5" class="text-center">{{$camps->links()}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
     </div>
 
     <!-- Modal -->
@@ -109,17 +118,18 @@
     </div>
 @endsection
 @section('extra_scripts')
+    <script type="text/javascript" src="{{asset('js/app.list-manager.js')}}"></script>
     <script type="text/javascript">
       $(function () {
-        var $this = $('#newCampForm');
-        var NP = $('#notify');
-        $this.submit(function (e) {
+        var $newCampForm = $('#newCampForm');
+        var NP = $('#notify', $newCampForm);
+        $newCampForm.submit(function (e) {
           e.preventDefault();
-          $('button[type=submit]', $this).attr('disabled', true);
+          $('button[type=submit]', $newCampForm).attr('disabled', true);
           ajaxCall({
-            url: $this.prop('action'),
+            url: $newCampForm.prop('action'),
             method: "POST",
-            data: $this.serialize(),
+            data: $newCampForm.serialize(),
             onSuccess: function (response) {
               notify(NP, response);
               if (response.status == true) {
@@ -127,10 +137,10 @@
               }
             },
             onFailure: function (xhr) {
-              handleHttpErrors(xhr, $this, '#notify');
+              handleHttpErrors(xhr, $newCampForm, '#notify');
             },
             onComplete: function () {
-              $('button[type=submit]', $this).removeAttr('disabled');
+              $('button[type=submit]', $newCampForm).removeAttr('disabled');
             }
           });
         });

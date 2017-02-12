@@ -18,7 +18,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{{route('app.home')}}">IDS-4-IDPs</a>
+                <a class="navbar-brand" href="{{route('app.home')}}">{{config('app.name')}}</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -44,9 +44,9 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="{{route('admin.locations_states')}}">Locations</a></li>
-                            <li><a href="{{route('admin.settings')}}">App. Settings</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="{{route('admin.sys_log')}}">Sys. Logs</a></li>
+                            <li><a href="{{route('admin.settings')}}">App. Settings</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">

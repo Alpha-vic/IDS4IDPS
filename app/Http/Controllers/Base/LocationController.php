@@ -38,4 +38,93 @@ class LocationController extends Controller
 
         return ['status' => true, 'message' => 'LGA added successfully'];
     }
+
+    public function manageStateList(Request $request)
+    {
+        $this->validate($request, ['action' => 'required', 'id' => 'required|array'], ['id.required' => 'Select 1 or more items']);
+
+        $in = $request->input();
+
+        switch ($in['action']) {
+            case 'delete':
+                $count = $this->deleteObjects($in['id'], State::class);
+
+                return ['status' => true, 'message' => $count.' States Deleted'];
+            break;
+            case 'restore':
+                $count = $this->restoreObjects($in['id'], State::class);
+
+                return ['status' => true, 'message' => $count.' States Restored'];
+            break;
+            case 'discard':
+                $count = $this->forceDeleteObjects($in['id'], State::class);
+
+                return ['status' => true, 'message' => $count.' States Deleted Permanently.'];
+            break;
+        }
+
+        return ['status' => false, 'message' => 'Invalid Request.'];
+    }
+
+    public function manageLgaList(Request $request)
+    {
+        $this->validate($request, ['action' => 'required', 'id' => 'required|array'], ['id.required' => 'Select 1 or more items']);
+
+        $in = $request->input();
+
+        switch ($in['action']) {
+            case 'delete':
+                $count = $this->deleteObjects($in['id'], LGA::class);
+
+                return ['status' => true, 'message' => $count.' LGAs Deleted'];
+            break;
+            case 'restore':
+                $count = $this->restoreObjects($in['id'], LGA::class);
+
+                return ['status' => true, 'message' => $count.' LGAs Restored'];
+            break;
+            case 'discard':
+                $count = $this->forceDeleteObjects($in['id'], LGA::class);
+
+                return ['status' => true, 'message' => $count.' LGAs Deleted Permanently.'];
+            break;
+        }
+
+        return ['status' => false, 'message' => 'Invalid Request.'];
+    }
+
+    private function deleteObjects(array $ids, $class)
+    {
+        if ($class == State::class) {
+            $states = State::findMany($ids);
+            $ids = [];
+            foreach ($states as $state) {
+                if (count($state->lgas) == 0) {
+                    $ids[] = $state->id;
+                }
+            }
+        }
+
+        return $class::whereIn('id', $ids)->delete();
+    }
+
+    private function restoreObjects(array $ids, $class)
+    {
+        return $class::whereIn('id', $ids)->restore();
+    }
+
+    private function forceDeleteObjects(array $ids, $class)
+    {
+        if ($class == State::class) {
+            $states = State::findMany($ids);
+            $ids = [];
+            foreach ($states as $state) {
+                if (count(LGA::withTrashed()->where('state_id',$state->id)->get()) == 0) {
+                    $ids[] = $state->id;
+                }
+            }
+        }
+
+        return $class::whereIn('id', $ids)->forceDelete();
+    }
 }

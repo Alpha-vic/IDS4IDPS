@@ -47,32 +47,31 @@ Route::group(['namespace' => 'Pages'], function () {
 //-------------Base Routes-----------------------------------------------------
 Route::group(['as' => 'user.', 'prefix' => 'user', 'namespace' => 'Base'], function () {
     Route::post('add', ['as' => 'add', 'uses' => 'UserController@add']);
-    Route::post('remove', ['as' => 'remove', 'uses' => 'UserController@remove']);
-
     Route::post('update', ['as' => 'update', 'uses' => 'UserController@update']);
-    Route::post('photo', ['as' => 'photo', 'uses' => 'UserController@setPhoto']);
+    Route::post('set-photo', ['as' => 'photo', 'uses' => 'UserController@setPhoto']);
     Route::post('change-password', ['as' => 'change_password', 'uses' => 'UserController@changePassword']);
+    Route::post('manage-list', ['as' => 'manage_list', 'uses' => 'UserController@manageList']);
 });
 
 Route::group(['as' => 'location.', 'prefix' => 'location', 'namespace' => 'Base'], function () {
     Route::post('add-state', ['as' => 'add_state', 'uses' => 'LocationController@addState']);
     Route::post('update-state', ['as' => 'update_state', 'uses' => 'LocationController@updateState']);
-    Route::post('remove-state', ['as' => 'remove_state', 'uses' => 'LocationController@removeState']);
+    Route::post('manage-states', ['as' => 'manage_state_list', 'uses' => 'LocationController@manageStateList']);
     Route::post('add-lga', ['as' => 'add_lga', 'uses' => 'LocationController@addLga']);
     Route::post('update-lga', ['as' => 'update_lga', 'uses' => 'LocationController@updateLga']);
-    Route::post('remove-lga', ['as' => 'remove_lga', 'uses' => 'LocationController@removeLga']);
+    Route::post('manage-lgas', ['as' => 'manage_lga_list', 'uses' => 'LocationController@manageLgaList']);
 });
 
 Route::group(['as' => 'camp.', 'prefix' => 'camp', 'namespace' => 'Base'], function () {
     Route::post('add', ['as' => 'add', 'uses' => 'CampController@add']);
     Route::post('update', ['as' => 'update', 'uses' => 'CampController@update']);
-    Route::post('remove', ['as' => 'remove', 'uses' => 'CampController@remove']);
+    Route::post('manage-list', ['as' => 'manage_list', 'uses' => 'CampController@manageList']);
 });
 
 Route::group(['as' => 'organization.', 'prefix' => 'organization', 'namespace' => 'Base'], function () {
     Route::post('add', ['as' => 'add', 'uses' => 'OrganizationController@add']);
     Route::post('update', ['as' => 'update', 'uses' => 'OrganizationController@update']);
-    Route::post('remove', ['as' => 'remove', 'uses' => 'OrganizationController@remove']);
+    Route::post('manage-list', ['as' => 'manage_list', 'uses' => 'OrganizationController@manageList']);
 });
 
 Route::group(['as' => 'idp.', 'prefix' => 'idp', 'namespace' => 'Base'], function () {
@@ -80,6 +79,7 @@ Route::group(['as' => 'idp.', 'prefix' => 'idp', 'namespace' => 'Base'], functio
     Route::post('set-photo', ['as' => 'set_photo', 'uses' => 'PersonController@setPhoto']);
     Route::post('remove', ['as' => 'remove', 'uses' => 'PersonController@remove']);
     Route::post('discard', ['as' => 'discard', 'uses' => 'PersonController@discard']);
+    Route::post('manage-list', ['as' => 'manage_list', 'uses' => 'PersonController@manageList']);
 });
 
 //-------------Authentication, Registration & Password Reset roues-----------------//

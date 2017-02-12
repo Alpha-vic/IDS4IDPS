@@ -31,4 +31,46 @@ class OrganizationController extends Controller
         return ['status' => true, 'message' => 'Organization added successfully'];
     }
 
+
+    public function manageList(Request $request)
+    {
+        $this->validate($request, ['action' => 'required', 'id' => 'required|array'], ['id.required' => 'Select 1 or more items']);
+
+        $in = $request->input();
+
+        switch ($in['action']) {
+            case 'delete':
+                $count = $this->deleteObjects($in['id']);
+
+                return ['status' => true, 'message' => $count.' Organizations Deleted'];
+            break;
+            case 'restore':
+                $count = $this->restoreObjects($in['id']);
+
+                return ['status' => true, 'message' => $count.' Organizations Restored'];
+            break;
+            case 'discard':
+                $count = $this->forceDeleteObjects($in['id']);
+
+                return ['status' => true, 'message' => $count.' Organizations Deleted Permanently.'];
+            break;
+        }
+
+        return ['status' => false, 'message' => 'Invalid Request.'];
+    }
+
+    private function deleteObjects(array $ids)
+    {
+        return Organization::whereIn('id', $ids)->delete();
+    }
+
+    private function restoreObjects(array $ids)
+    {
+        return Organization::whereIn('id', $ids)->restore();
+    }
+
+    private function forceDeleteObjects(array $ids)
+    {
+        return Organization::whereIn('id', $ids)->forceDelete();
+    }
 }
