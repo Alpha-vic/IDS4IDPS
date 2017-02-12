@@ -16,7 +16,7 @@
                     <div class="form-group">
                         <label for="camp" class="col-sm-2 control-label">Camp</label>
                         <div class="col-sm-10">
-                            <select class="form-control" id="camp" name="camp">
+                            <select class="form-control" id="camp" name="camp_id">
                                 <option disabled>-</option>
                                 @foreach($camps as $camp)
                                     <option value="{{$camp->id}}">{{$camp->name}}</option>
@@ -29,17 +29,17 @@
                         <div class="form-group">
                             <label for="f-name" class="col-sm-2 control-label">Names</label>
                             <div class="col-sm-3">
-                                <input type="text" maxlength="255" class="form-control" id="f-name" name="first-name" value="{{$IDP->first_name}}"
+                                <input type="text" maxlength="255" class="form-control" id="f-name" name="first_name" value="{{$IDP->first_name}}"
                                        placeholder="First name">
                             </div>
                             <div class="col-sm-3">
                                 <label for="m-name" class="sr-only">Middle Name</label>
-                                <input type="text" maxlength="255" class="form-control" id="m-name" name="middle-name" value="{{$IDP->middle_name}}"
+                                <input type="text" maxlength="255" class="form-control" id="m-name" name="middle_name" value="{{$IDP->middle_name}}"
                                        placeholder="Middle name">
                             </div>
                             <div class="col-sm-4">
                                 <label for="l-name" class="sr-only">Last Name</label>
-                                <input type="text" maxlength="255" class="form-control" id="l-name" name="last-name" value="{{$IDP->last_name}}"
+                                <input type="text" maxlength="255" class="form-control" id="l-name" name="last_name" value="{{$IDP->last_name}}"
                                        placeholder="Last name">
                             </div>
                         </div>
@@ -54,7 +54,7 @@
                             </div>
                             <label for="blood-group" class="col-sm-2 control-label">Blood Group</label>
                             <div class="col-sm-4">
-                                <select class="form-control" id="blood-group" name="blood-group">
+                                <select class="form-control" id="blood-group" name="blood_group">
                                     <option disabled>-</option>
                                     <option value="A" @if('A'==$IDP->blood_group) selected @endif>A</option>
                                     <option value="B" @if('B'==$IDP->blood_group) selected @endif>B</option>
@@ -66,7 +66,7 @@
                         <div class="form-group">
                             <label for="birth-date" class="col-sm-2 control-label">Date of Birth</label>
                             <div class="col-sm-4">
-                                <input type="date" class="form-control" id="birth-date" name="birth-date">
+                                <input type="date" class="form-control" id="birth-date" name="birth_date">
                             </div>
                             <label for="height" class="col-sm-2 control-label">Height (ft.)</label>
                             <div class="col-sm-4">
@@ -77,7 +77,7 @@
                         <div class="form-group">
                             <label for="state" class="col-sm-2 control-label">State of Origin</label>
                             <div class="col-sm-4">
-                                <select class="form-control" id="state" name="state">
+                                <select class="form-control" id="state" name="state_id">
                                     <option disabled selected>-</option>
                                     @if(is_object($IDP->state))
                                         @foreach($states as $state)
@@ -92,7 +92,7 @@
                             </div>
                             <label for="lga" class="col-sm-2 control-label">Local Govt.</label>
                             <div class="col-sm-4">
-                                <select class="form-control" id="lga" name="lga">
+                                <select class="form-control" id="lga" name="lga_id">
                                     <option disabled selected>-</option>
                                     @if(is_object($IDP->lga))
                                         @foreach($lgas as $lga)
@@ -151,10 +151,12 @@
                         </div>
                     </fieldset>
                     <hr class="divider">
-                    <div class="text-right padding-btm-2em">
-                        <strong id="notify"></strong>
+                    <div class="text-center padding-btm-2em">
                         <button type="submit" class="btn btn-primary">Enroll IDP</button>
+                        @if($IDP->status == \App\Models\Person::STATUS_TMP)
                         <button type="button" class="btn btn-warning" id="x-btn">Cancel</button>
+                        @endif
+                        <div><strong id="notify"></strong></div>
                     </div>
                 </form>
             </div>
@@ -183,7 +185,9 @@
             onSuccess: function (response) {
               notify(NP, response);
               if (response.status == true) {
-                window.location.reload();
+                setTimeout(function () {
+                  window.location = '<?= route('deo.persons'); ?>';
+                }, 2000);
               }
             },
             onFailure: function (xhr) {
