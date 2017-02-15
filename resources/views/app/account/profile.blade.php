@@ -66,51 +66,6 @@
                             </fieldset>
 
                             <fieldset>
-                                <legend class="small">Bank Account Info.</legend>
-                                <div class="form-group{{ $errors->has('account_name') ? ' has-error' : '' }}">
-                                    <label for="account_name" class="col-md-3 control-label">Account Name</label>
-
-                                    <div class="col-md-8">
-                                        <input id="account_name" type="text" class="form-control" name="account_name"
-                                               value="{{ $user->account_name }}" required>
-                                        @if ($errors->has('account_name'))
-                                            <span class="help-block">
-                                        <strong>{{ $errors->first('account_name') }}</strong>
-                                    </span>
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <div class="form-group{{ $errors->has('account_number') ? ' has-error' : '' }}">
-                                    <label for="account_number" class="col-md-3 control-label">Account Number</label>
-
-                                    <div class="col-md-8">
-                                        <input id="account_number" type="number" min="0" class="form-control" name="account_number"
-                                               value="{{ $user->account_number }}" required>
-                                        @if ($errors->has('account_number'))
-                                            <span class="help-block">
-                                        <strong>{{ $errors->first('account_number') }}</strong>
-                                    </span>
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <div class="form-group{{ $errors->has('bank_name') ? ' has-error' : '' }}">
-                                    <label for="bank_name" class="col-md-3 control-label">Bank Name</label>
-
-                                    <div class="col-md-8">
-                                        <input id="bank_name" type="text" class="form-control" name="bank_name"
-                                               value="{{ $user->bank_name }}" required>
-                                        @if ($errors->has('bank_name'))
-                                            <span class="help-block">
-                                        <strong>{{ $errors->first('bank_name') }}</strong>
-                                    </span>
-                                        @endif
-                                    </div>
-                                </div>
-                            </fieldset>
-
-                            <fieldset>
                                 <legend class="small">Authorization</legend>
 
                                 <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">

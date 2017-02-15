@@ -2,9 +2,11 @@
 namespace App\Http\Controllers\Base;
 
 use App\Http\Controllers\Controller;
+use App\Models\Person;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -47,6 +49,91 @@ class UserController extends Controller
         $USER->roles()->attach($role);
 
         return ['status' => true, 'message' => 'User added successfully.'];
+    }
+
+    public function update(Request $request)
+    {
+        $this->validate($request, [
+            'first_name' => 'required|max:255',
+            'last_name' => 'required|max:255',
+            'email' => 'required|email|max:100',
+            'phone' => 'required|numeric|digits:11',
+            'password' => 'required',
+        ]);
+
+        /**
+         * @var User $user
+         */
+        $user = Auth::user();
+        $in = $request->input();
+
+        if (crypt($in['password'], $user->password) === $user->password) {
+            $user->update(array_except($in, ['password']));
+
+            return ['status' => true, 'message' => 'Update successful.'];
+        }
+
+        return [
+            'message' => 'Password is incorrect.',
+            'status' => false,
+        ];
+    }
+
+    public function setPhoto(Request $request)
+    {
+        /**
+         * @var Person $IDP
+         */
+        if (is_object($IDP = Person::find($request->input('id')))) {
+            $uploadedFile = $request->file('image');
+            $path = $uploadedFile->storeAs(Person::IMAGE_DIR.'/'.date('Y-W'), uniqid().'.'.$uploadedFile->extension());
+            if ($path) {
+                $IDP->checkCropAndSave(str_replace(Person::IMAGE_DIR.'/', '', $path));
+                $path = $IDP->getPhotoUrl();
+
+                return [
+                    'status' => true,
+                    'data' => ['url' => $path],
+                    'message' => 'Upload Successful',
+                ];
+            }
+        }
+
+        return ['status' => false, 'message' => 'Invalid Request'];
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return string
+     */
+    public function changePassword(Request $request)
+    {
+        $this->validate($request, [
+            'current_password' => 'required|min:6',
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        /**
+         * @var User $user
+         */
+        $user = Auth::user();
+        $input = $request->input();
+
+        if (crypt($input['current_password'], $user->password) === $user->password) {
+            $user->password = bcrypt($input['password']);
+            $user->save();
+
+            return [
+                'message' => 'Password changed successfully.',
+                'status' => true,
+            ];
+        }
+
+        return [
+            'message' => 'Current password is incorrect.',
+            'status' => false,
+        ];
     }
 
     public function manageList(Request $request)
