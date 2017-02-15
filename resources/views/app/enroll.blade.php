@@ -16,7 +16,7 @@
                     <div class="form-group">
                         <label for="camp" class="col-sm-2 control-label">Camp</label>
                         <div class="col-sm-10">
-                            <select class="form-control" id="camp" name="camp_id">
+                            <select class="form-control" id="camp" name="camp_id" required>
                                 <option disabled>-</option>
                                 @foreach($camps as $camp)
                                     <option value="{{$camp->id}}">{{$camp->name}}</option>
@@ -30,7 +30,7 @@
                             <label for="f-name" class="col-sm-2 control-label">Names</label>
                             <div class="col-sm-3">
                                 <input type="text" maxlength="255" class="form-control" id="f-name" name="first_name" value="{{$IDP->first_name}}"
-                                       placeholder="First name">
+                                       placeholder="First name" required>
                             </div>
                             <div class="col-sm-3">
                                 <label for="m-name" class="sr-only">Middle Name</label>
@@ -40,13 +40,13 @@
                             <div class="col-sm-4">
                                 <label for="l-name" class="sr-only">Last Name</label>
                                 <input type="text" maxlength="255" class="form-control" id="l-name" name="last_name" value="{{$IDP->last_name}}"
-                                       placeholder="Last name">
+                                       placeholder="Last name" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="sex" class="col-sm-2 control-label">Sex</label>
                             <div class="col-sm-4">
-                                <select class="form-control" id="sex" name="sex">
+                                <select class="form-control" id="sex" name="sex" required>
                                     <option disabled>-</option>
                                     <option value="F" @if('F'==$IDP->sex) selected @endif>Female</option>
                                     <option value="M" @if('M'==$IDP->sex) selected @endif>Male</option>
@@ -54,7 +54,7 @@
                             </div>
                             <label for="blood-group" class="col-sm-2 control-label">Blood Group</label>
                             <div class="col-sm-4">
-                                <select class="form-control" id="blood-group" name="blood_group">
+                                <select class="form-control" id="blood-group" name="blood_group" required>
                                     <option disabled>-</option>
                                     <option value="A" @if('A'==$IDP->blood_group) selected @endif>A</option>
                                     <option value="B" @if('B'==$IDP->blood_group) selected @endif>B</option>
@@ -66,7 +66,7 @@
                         <div class="form-group">
                             <label for="birth-date" class="col-sm-2 control-label">Date of Birth</label>
                             <div class="col-sm-4">
-                                <input type="date" class="form-control" id="birth-date" name="birth_date">
+                                <input type="date" class="form-control" id="birth-date" name="birth_date" required>
                             </div>
                             <label for="height" class="col-sm-2 control-label">Height (ft.)</label>
                             <div class="col-sm-4">
@@ -77,7 +77,7 @@
                         <div class="form-group">
                             <label for="state" class="col-sm-2 control-label">State of Origin</label>
                             <div class="col-sm-4">
-                                <select class="form-control" id="state" name="state_id">
+                                <select class="form-control" id="state" name="state_id" required>
                                     <option disabled selected>-</option>
                                     @if(is_object($IDP->state))
                                         @foreach($states as $state)
@@ -92,7 +92,7 @@
                             </div>
                             <label for="lga" class="col-sm-2 control-label">Local Govt.</label>
                             <div class="col-sm-4">
-                                <select class="form-control" id="lga" name="lga_id">
+                                <select class="form-control" id="lga" name="lga_id" required>
                                     <option disabled selected>-</option>
                                     @if(is_object($IDP->lga))
                                         @foreach($lgas as $lga)
