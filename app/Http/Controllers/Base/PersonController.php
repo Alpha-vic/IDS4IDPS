@@ -5,8 +5,18 @@ use App\Http\Controllers\Controller;
 use App\Models\Person;
 use Illuminate\Http\Request;
 
+/**
+ * Class PersonController
+ *
+ * @package App\Http\Controllers\Base
+ */
 class PersonController extends Controller
 {
+    /**
+     * @param Request $request
+     *
+     * @return $this|array
+     */
     public function update(Request $request)
     {
         $this->validate($request, [
@@ -36,6 +46,11 @@ class PersonController extends Controller
         return ['status' => false, 'message' => 'Something went wrong. Refresh the page and try again.'];
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return array
+     */
     public function setPhoto(Request $request)
     {
         /**
@@ -59,6 +74,11 @@ class PersonController extends Controller
         return ['status' => false, 'message' => 'Invalid Request'];
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return array
+     */
     public function discard(Request $request)
     {
         $in = $request->input();
@@ -74,6 +94,11 @@ class PersonController extends Controller
         return ['status' => false, 'message' => 'Invalid request.'];
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return array
+     */
     public function manageList(Request $request)
     {
         $this->validate($request, ['action' => 'required', 'id' => 'required|array'], ['id.required' => 'Select 1 or more items']);
@@ -101,16 +126,31 @@ class PersonController extends Controller
         return ['status' => false, 'message' => 'Invalid Request.'];
     }
 
+    /**
+     * @param array $ids
+     *
+     * @return mixed
+     */
     private function deleteObjects(array $ids)
     {
         return Person::whereIn('id', $ids)->delete();
     }
 
+    /**
+     * @param array $ids
+     *
+     * @return mixed
+     */
     private function restoreObjects(array $ids)
     {
         return Person::whereIn('id', $ids)->restore();
     }
 
+    /**
+     * @param array $ids
+     *
+     * @return mixed
+     */
     private function forceDeleteObjects(array $ids)
     {
         return Person::whereIn('id', $ids)->forceDelete();

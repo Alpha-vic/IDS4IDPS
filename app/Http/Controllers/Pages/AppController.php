@@ -8,14 +8,30 @@ use App\Models\LGA;
 use App\Models\Person;
 use App\Models\State;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
+/**
+ * Class AppController
+ *
+ * @package App\Http\Controllers\Pages
+ */
 class AppController extends Controller
 {
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index(Request $request)
     {
         return view('app.index');
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
     public function enroll(Request $request)
     {
         $camps = Camp::orderBy('name')->get();
@@ -31,6 +47,11 @@ class AppController extends Controller
         ])->withCookie('TMP_IDP_ID', $IDP->id);
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return static
+     */
     private function findOrCreateIdpProfile(Request $request)
     {
         if (!is_null($tmp_id = $request->cookie('TMP_IDP_ID'))) {

@@ -8,8 +8,18 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Class UserController
+ *
+ * @package App\Http\Controllers\Base
+ */
 class UserController extends Controller
 {
+    /**
+     * @param Request $request
+     *
+     * @return array
+     */
     public function add(Request $request)
     {
         $in = $request->input();
@@ -51,6 +61,11 @@ class UserController extends Controller
         return ['status' => true, 'message' => 'User added successfully.'];
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return array
+     */
     public function update(Request $request)
     {
         $this->validate($request, [
@@ -79,6 +94,11 @@ class UserController extends Controller
         ];
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return array
+     */
     public function setPhoto(Request $request)
     {
         /**
@@ -136,6 +156,11 @@ class UserController extends Controller
         ];
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return array
+     */
     public function manageList(Request $request)
     {
         $this->validate($request, ['action' => 'required', 'id' => 'required|array'], ['id.required' => 'Select 1 or more items']);
@@ -163,16 +188,31 @@ class UserController extends Controller
         return ['status' => false, 'message' => 'Invalid Request.'];
     }
 
+    /**
+     * @param array $ids
+     *
+     * @return mixed
+     */
     private function deleteObjects(array $ids)
     {
         return User::whereIn('id', $ids)->delete();
     }
 
+    /**
+     * @param array $ids
+     *
+     * @return mixed
+     */
     private function restoreObjects(array $ids)
     {
         return User::whereIn('id', $ids)->restore();
     }
 
+    /**
+     * @param array $ids
+     *
+     * @return mixed
+     */
     private function forceDeleteObjects(array $ids)
     {
         return User::whereIn('id', $ids)->forceDelete();

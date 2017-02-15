@@ -6,8 +6,18 @@ use App\Models\LGA;
 use App\Models\State;
 use Illuminate\Http\Request;
 
+/**
+ * Class LocationController
+ *
+ * @package App\Http\Controllers\Base
+ */
 class LocationController extends Controller
 {
+    /**
+     * @param Request $request
+     *
+     * @return array
+     */
     public function addState(Request $request)
     {
         $in = $request->input();
@@ -22,6 +32,11 @@ class LocationController extends Controller
         return ['status' => true, 'message' => 'State added successfully'];
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return array
+     */
     public function addLga(Request $request)
     {
         $in = $request->input();
@@ -39,6 +54,11 @@ class LocationController extends Controller
         return ['status' => true, 'message' => 'LGA added successfully'];
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return array
+     */
     public function manageStateList(Request $request)
     {
         $this->validate($request, ['action' => 'required', 'id' => 'required|array'], ['id.required' => 'Select 1 or more items']);
@@ -66,6 +86,11 @@ class LocationController extends Controller
         return ['status' => false, 'message' => 'Invalid Request.'];
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return array
+     */
     public function manageLgaList(Request $request)
     {
         $this->validate($request, ['action' => 'required', 'id' => 'required|array'], ['id.required' => 'Select 1 or more items']);
@@ -93,6 +118,12 @@ class LocationController extends Controller
         return ['status' => false, 'message' => 'Invalid Request.'];
     }
 
+    /**
+     * @param array $ids
+     * @param $class
+     *
+     * @return mixed
+     */
     private function deleteObjects(array $ids, $class)
     {
         if ($class == State::class) {
@@ -108,11 +139,23 @@ class LocationController extends Controller
         return $class::whereIn('id', $ids)->delete();
     }
 
+    /**
+     * @param array $ids
+     * @param $class
+     *
+     * @return mixed
+     */
     private function restoreObjects(array $ids, $class)
     {
         return $class::whereIn('id', $ids)->restore();
     }
 
+    /**
+     * @param array $ids
+     * @param $class
+     *
+     * @return mixed
+     */
     private function forceDeleteObjects(array $ids, $class)
     {
         if ($class == State::class) {

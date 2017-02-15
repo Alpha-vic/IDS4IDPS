@@ -5,8 +5,18 @@ use App\Http\Controllers\Controller;
 use App\Models\Organization;
 use Illuminate\Http\Request;
 
+/**
+ * Class OrganizationController
+ *
+ * @package App\Http\Controllers\Base
+ */
 class OrganizationController extends Controller
 {
+    /**
+     * @param Request $request
+     *
+     * @return array
+     */
     public function add(Request $request)
     {
         $in = $request->input();
@@ -31,7 +41,11 @@ class OrganizationController extends Controller
         return ['status' => true, 'message' => 'Organization added successfully'];
     }
 
-
+    /**
+     * @param Request $request
+     *
+     * @return array
+     */
     public function manageList(Request $request)
     {
         $this->validate($request, ['action' => 'required', 'id' => 'required|array'], ['id.required' => 'Select 1 or more items']);
@@ -59,16 +73,31 @@ class OrganizationController extends Controller
         return ['status' => false, 'message' => 'Invalid Request.'];
     }
 
+    /**
+     * @param array $ids
+     *
+     * @return mixed
+     */
     private function deleteObjects(array $ids)
     {
         return Organization::whereIn('id', $ids)->delete();
     }
 
+    /**
+     * @param array $ids
+     *
+     * @return mixed
+     */
     private function restoreObjects(array $ids)
     {
         return Organization::whereIn('id', $ids)->restore();
     }
 
+    /**
+     * @param array $ids
+     *
+     * @return mixed
+     */
     private function forceDeleteObjects(array $ids)
     {
         return Organization::whereIn('id', $ids)->forceDelete();
