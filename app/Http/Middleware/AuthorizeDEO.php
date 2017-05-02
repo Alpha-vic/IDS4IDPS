@@ -21,8 +21,7 @@ class AuthorizeDEO
         /**
          * @var User $user
          */
-        $user = Auth::user();
-        if ($user->isDEO()) {
+        if (is_object($user = Auth::user()) and $user->isDEO()) {
             return $next($request);
         }
 
