@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="Biometry.jnlp">
+  <information>
+    <title>Biometry</title>
+    <vendor>CHUKWUDI</vendor>
+    <description>null</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="Biometry.jar" size="59587" download="eager" />
+    <jar href="lib\dpotapi.jar" size="67495" download="eager" />
+    <jar href="lib\dpotjni.jar" size="14180" download="eager" />
+  </resources>
+<security>
+  <all-permissions/>
+</security>
+  <applet-desc  width="600" height="232" main-class="com.javafx.main.NoJavaFXFallback"  name="Biometry" >
+    <param name="requiredFXVersion" value="8.0+"/>
+  </applet-desc>
+  <jfx:javafx-desc  width="600" height="232" main-class="biometry.Main"  name="Biometry" />
+  <update check="always"/>
+</jnlp>

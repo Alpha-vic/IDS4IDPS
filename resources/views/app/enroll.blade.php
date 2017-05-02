@@ -17,7 +17,7 @@
                         <label for="camp" class="col-sm-2 control-label">Camp</label>
                         <div class="col-sm-10">
                             <select class="form-control" id="camp" name="camp_id" required>
-                                <option disabled>-</option>
+                                <option></option>
                                 @foreach($camps as $camp)
                                     <option value="{{$camp->id}}">{{$camp->name}}</option>
                                 @endforeach
@@ -47,7 +47,7 @@
                             <label for="sex" class="col-sm-2 control-label">Sex</label>
                             <div class="col-sm-4">
                                 <select class="form-control" id="sex" name="sex" required>
-                                    <option disabled>-</option>
+                                    <option></option>
                                     <option value="F" @if('F'==$IDP->sex) selected @endif>Female</option>
                                     <option value="M" @if('M'==$IDP->sex) selected @endif>Male</option>
                                 </select>
@@ -55,7 +55,7 @@
                             <label for="blood-group" class="col-sm-2 control-label">Blood Group</label>
                             <div class="col-sm-4">
                                 <select class="form-control" id="blood-group" name="blood_group" required>
-                                    <option disabled>-</option>
+                                    <option></option>
                                     <option value="A" @if('A'==$IDP->blood_group) selected @endif>A</option>
                                     <option value="B" @if('B'==$IDP->blood_group) selected @endif>B</option>
                                     <option value="O" @if('O'==$IDP->blood_group) selected @endif>O</option>
@@ -78,7 +78,7 @@
                             <label for="state" class="col-sm-2 control-label">State of Origin</label>
                             <div class="col-sm-4">
                                 <select class="form-control" id="state" name="state_id" required>
-                                    <option disabled selected>-</option>
+                                    <option></option>
                                     @if(is_object($IDP->state))
                                         @foreach($states as $state)
                                             <option value="{{$state->id}}" @if($state->id==$IDP->state->id) selected @endif>{{$state->name}}</option>
@@ -93,7 +93,7 @@
                             <label for="lga" class="col-sm-2 control-label">Local Govt.</label>
                             <div class="col-sm-4">
                                 <select class="form-control" id="lga" name="lga_id" required>
-                                    <option disabled selected>-</option>
+                                    <option></option>
                                     @if(is_object($IDP->lga))
                                         @foreach($lgas as $lga)
                                             <option value="{{$lga->id}}" @if($lga->id==$IDP->lga->id) selected @endif>{{$lga->name}}</option>
@@ -143,10 +143,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-9">
-                                <div class="text-center">
-                                    <h4>Fingerprints</h4>
+                            <div class="col-sm-9 text-center">
+                                <div id="biomet-container">
                                 </div>
+                                <a href='Biometry.jnlp' onclick="return launchApplication('Biometry.jnlp');">Launch WebStart</a>
                             </div>
                         </div>
                     </fieldset>
@@ -154,7 +154,7 @@
                     <div class="text-center padding-btm-2em">
                         <button type="submit" class="btn btn-primary">Enroll IDP</button>
                         @if($IDP->status == \App\Models\Person::STATUS_TMP)
-                        <button type="button" class="btn btn-warning" id="x-btn">Cancel</button>
+                            <button type="button" class="btn btn-warning" id="x-btn">Cancel</button>
                         @endif
                         <div><strong id="notify"></strong></div>
                     </div>
@@ -169,6 +169,7 @@
     @include('parts.image_previewer')
 @endsection
 @section('extra_scripts')
+    <!--Image Processing-->
     <script src="{{asset('js/imageupload/cropper.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('js/imageupload/preview.js')}}" type="text/javascript"></script>
     <script type="text/javascript">
@@ -248,5 +249,50 @@
       initButtons(previewer, prefWidth, prefHeight, handlerUrl, modalWindow, input, function (formData) {
         formData.append('id', $('input[name=id]').val())
       });
+    </script>
+
+    <!--Fingerprint Capture-->
+    <script src="{{asset('biomet/assets/dtjava.js')}}" type="text/javascript"></script>
+    <script>
+      var jnlp_content = 'PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjxqbmxwIHNwZWM9IjEuMCIgeG1sbnM6amZ4PSJodHRwOi8vamF2YWZ4LmNvbSIgaHJlZj0iQmlvbWV0cnkuam5scCI+DQogIDxpbmZvcm1hdGlvbj4NCiAgICA8dGl0bGU+QmlvbWV0cnk8L3RpdGxlPg0KICAgIDx2ZW5kb3I+Q0hVS1dVREk8L3ZlbmRvcj4NCiAgICA8ZGVzY3JpcHRpb24+bnVsbDwvZGVzY3JpcHRpb24+DQogICAgPG9mZmxpbmUtYWxsb3dlZC8+DQogIDwvaW5mb3JtYXRpb24+DQogIDxyZXNvdXJjZXM+DQogICAgPGoyc2UgdmVyc2lvbj0iMS42KyIgaHJlZj0iaHR0cDovL2phdmEuc3VuLmNvbS9wcm9kdWN0cy9hdXRvZGwvajJzZSIvPg0KICAgIDxqYXIgaHJlZj0iQmlvbWV0cnkuamFyIiBzaXplPSI1OTU4NyIgZG93bmxvYWQ9ImVhZ2VyIiAvPg0KICAgIDxqYXIgaHJlZj0ibGliXGRwb3RhcGkuamFyIiBzaXplPSI2NzQ5NSIgZG93bmxvYWQ9ImVhZ2VyIiAvPg0KICAgIDxqYXIgaHJlZj0ibGliXGRwb3RqbmkuamFyIiBzaXplPSIxNDE4MCIgZG93bmxvYWQ9ImVhZ2VyIiAvPg0KICA8L3Jlc291cmNlcz4NCjxzZWN1cml0eT4NCiAgPGFsbC1wZXJtaXNzaW9ucy8+DQo8L3NlY3VyaXR5Pg0KICA8YXBwbGV0LWRlc2MgIHdpZHRoPSI4MDAiIGhlaWdodD0iNjAwIiBtYWluLWNsYXNzPSJjb20uamF2YWZ4Lm1haW4uTm9KYXZhRlhGYWxsYmFjayIgIG5hbWU9IkJpb21ldHJ5IiA+DQogICAgPHBhcmFtIG5hbWU9InJlcXVpcmVkRlhWZXJzaW9uIiB2YWx1ZT0iOC4wKyIvPg0KICA8L2FwcGxldC1kZXNjPg0KICA8amZ4OmphdmFmeC1kZXNjICB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgbWFpbi1jbGFzcz0iYmlvbWV0cnkuTWFpbiIgIG5hbWU9IkJpb21ldHJ5IiAvPg0KICA8dXBkYXRlIGNoZWNrPSJhbHdheXMiLz4NCjwvam5scD4NCg==';
+      function launchApplication(jnlpfile) {
+        dtjava.launch({
+            url: 'Biometry.jnlp',
+            jnlp_content: jnlp_content
+          },
+          {
+            javafx: '8.0+'
+          },
+          {}
+        );
+        return false;
+      }
+
+      function javafxEmbedBiometry() {
+        dtjava.embed(
+          {
+            id: 'biometry',
+            url: 'Biometry.jnlp',
+            placeholder: 'biomet-container',
+            width: '600',
+            height: '232',
+            jnlp_content: jnlp_content,
+            params: {
+              mode: "Verification",
+              choice: "Right",
+              url: "127.0.0.1/biomet/enroll_fp.php",
+              userID: "",
+              template: ""
+
+            }
+          },
+          {
+            javafx: '8.0+'
+          },
+          {}
+        );
+      }
+      <!-- Embed FX application into web page once page is loaded -->
+      dtjava.addOnloadCallback(javafxEmbedBiometry, false);
     </script>
 @endsection
