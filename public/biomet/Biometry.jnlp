@@ -8,16 +8,17 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="Biometry.jar" size="59587" download="eager" />
-    <jar href="lib\dpotapi.jar" size="67495" download="eager" />
+    <jar href="Biometry.jar" size="62437" download="eager" />
+    <jar href="lib\dpotapi.jar" size="67493" download="eager" />
     <jar href="lib\dpotjni.jar" size="14180" download="eager" />
+    <jar href="lib\mysql-connector-java-5.1.42-bin.jar" size="1036030" download="eager" />
   </resources>
 <security>
   <all-permissions/>
 </security>
-  <applet-desc  width="600" height="232" main-class="com.javafx.main.NoJavaFXFallback"  name="Biometry" >
+  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="Biometry" >
     <param name="requiredFXVersion" value="8.0+"/>
   </applet-desc>
-  <jfx:javafx-desc  width="600" height="232" main-class="biometry.Main"  name="Biometry" />
+  <jfx:javafx-desc  width="800" height="600" main-class="biometry.Main"  name="Biometry" />
   <update check="always"/>
 </jnlp>
