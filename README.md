@@ -74,5 +74,5 @@ using biometric (fingerprint and picture) for identification.
 <h3>Designed and Developed by:</h3>
 <ul style="list-style: square">
 <li>Musa Umar (M.Sc, Computer Science, University of Nigeria Nsukka)<br/>Email: musa.umar.pg76718@unn.edu.ng</li>
-<li><a href="https://www.linkedin.com/in/jcnwobodo">Nwobodo Chukwuemeka</a> (B.Sc, Computer Science '017, University of Nigeria Nsukka)</li>
+<li><a href="https://www.linkedin.com/in/jcnwobodo">Nwobodo Chukwuemeka</a> (B.Sc, Computer Science '017, University of Nigeria Nsukka)<br/>Email: chukwuemeka.nwobodo.186997@unn.edu.ng</li>
 </ul>
