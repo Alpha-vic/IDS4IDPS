@@ -23,6 +23,8 @@ class CreatePersonsTable extends Migration
             $table->decimal('height')->nullable();
             $table->string('blood_group', 3)->nullable();
             $table->string('photo', 2000)->nullable();
+            $table->binary('left_thumb')->nullable();
+            $table->binary('right_thumb')->nullable();
             $table->string('email', 100)->nullable();
             $table->string('phone', 15)->nullable();
             $table->text('description')->nullable();

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use App\Models\Traits\PersonalNames;
@@ -16,9 +17,10 @@ class Person extends Model
     protected $fillable = [
         'first_name', 'middle_name', 'last_name',
         'birth_date', 'sex', 'height', 'photo', 'description',
-        'code', 'lga_id', 'camp_id', 'email', 'phone', 'status'
+        'code', 'lga_id', 'camp_id', 'email', 'phone', 'status',
+        'left_thumb', 'right_thumb'
     ];
-    protected $casts = ['birth_date'=>'date'];
+    protected $casts    = ['birth_date' => 'date'];
     protected $appends  = ['state', 'age'];
 
     const STATUS_TMP      = 0;
