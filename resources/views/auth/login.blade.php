@@ -59,6 +59,7 @@
                                     </a>
                                 </div>
                             </div>
+                            <div class="text-center padding-1em"><span id="notify"></span></div>
                         </form>
                     </div>
                 </div>

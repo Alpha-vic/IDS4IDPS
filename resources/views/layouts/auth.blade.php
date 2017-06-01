@@ -39,24 +39,3 @@
     </div>
     @include('parts.navbar-footer')
 @endsection
-@section('extra_scripts')
-    <script type="text/javascript" src="{{asset('js/backstretch/jquery.backstretch.min.js')}}"></script>
-    <script type="text/javascript">
-      var WIN = $(window);
-      WIN.on('load', function () {
-        if (WIN.width() < 600) {
-          $.backstretch(["{{asset('images/slides/slide-1.jpg')}}"]);
-        }
-        else {
-          $.backstretch([
-              "{{asset('images/slides/slide-1.jpg')}}",
-              "{{asset('images/slides/slide-2.jpg')}}",
-              "{{asset('images/slides/slide-3.jpg')}}",
-              "{{asset('images/slides/slide-4.jpg')}}",
-            ],
-            {duration: 15000, fade: 1500}
-          );
-        }
-      });
-    </script>
-@endsection
