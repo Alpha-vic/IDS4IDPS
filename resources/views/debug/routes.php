@@ -37,7 +37,7 @@
                         '<tr>
                 <td>' . $route->getName() . '</td>
                 <td>' . implode(', ', $methods) . '</td>
-                <td><a href="' . url($route->uri()) . '" target="_new">' . $route->getPath() . '</td>
+                <td><a href="' . url($route->uri()) . '" target="_new">' . $route->uri() . '</td>
                 <td>' . $route->getActionName() . '</td>
                 <td>' . implode(', ', $route->gatherMiddleware()) . '</td>
             </tr>';
