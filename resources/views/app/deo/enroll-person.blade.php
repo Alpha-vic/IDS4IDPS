@@ -1,8 +1,8 @@
 @extends('layouts.deo')
 @section('extra_heads')
     @parent
-    <link href="{{asset('css/cropper.min.css')}}" rel="stylesheet">
-    <link href="{{asset('css/app.image-preview.css')}}" rel="stylesheet">
+    <link href="{{asset('css/cropper.min.css')}}" rel="stylesheet"/>
+    <link href="{{asset('css/app.image-preview.css')}}" rel="stylesheet"/>
 @endsection
 @section('content')
     <div class="container">
@@ -34,8 +34,8 @@
                             </div>
                             <div class="col-sm-3">
                                 <label for="m-name" class="sr-only">Middle Name</label>
-                                <input type="text" maxlength="255" class="form-control" id="m-name" name="middle_name" value="{{$IDP->middle_name}}"
-                                       placeholder="Middle name">
+                                <input type="text" maxlength="255" class="form-control" id="m-name"
+                                       name="middle_name" value="{{$IDP->middle_name}}" placeholder="Middle name">
                             </div>
                             <div class="col-sm-4">
                                 <label for="l-name" class="sr-only">Last Name</label>
@@ -146,7 +146,9 @@
                             <div class="col-sm-9 text-center">
                                 <div id="biomet-container">
                                 </div>
+                                <!--
                                 <a href='Biometry.jnlp' onclick="return launchApplication('Biometry.jnlp');">Launch WebStart</a>
+                                -->
                             </div>
                         </div>
                     </fieldset>
@@ -156,7 +158,7 @@
                         @if($IDP->status == \App\Models\Person::STATUS_TMP)
                             <button type="button" class="btn btn-warning" id="x-btn">Cancel</button>
                         @endif
-                        <div><strong id="notify"></strong></div>
+                        <div><p id="notify"></p></div>
                     </div>
                 </form>
             </div>
@@ -254,10 +256,10 @@
     <!--Fingerprint Capture-->
     <script src="{{asset('biomet/assets/dtjava.js')}}" type="text/javascript"></script>
     <script>
-      var jnlp_content = 'PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjxqbmxwIHNwZWM9IjEuMCIgeG1sbnM6amZ4PSJodHRwOi8vamF2YWZ4LmNvbSIgaHJlZj0iQmlvbWV0cnkuam5scCI+DQogIDxpbmZvcm1hdGlvbj4NCiAgICA8dGl0bGU+QmlvbWV0cnk8L3RpdGxlPg0KICAgIDx2ZW5kb3I+Q0hVS1dVREk8L3ZlbmRvcj4NCiAgICA8ZGVzY3JpcHRpb24+bnVsbDwvZGVzY3JpcHRpb24+DQogICAgPG9mZmxpbmUtYWxsb3dlZC8+DQogIDwvaW5mb3JtYXRpb24+DQogIDxyZXNvdXJjZXM+DQogICAgPGoyc2UgdmVyc2lvbj0iMS42KyIgaHJlZj0iaHR0cDovL2phdmEuc3VuLmNvbS9wcm9kdWN0cy9hdXRvZGwvajJzZSIvPg0KICAgIDxqYXIgaHJlZj0iQmlvbWV0cnkuamFyIiBzaXplPSI1OTU4NyIgZG93bmxvYWQ9ImVhZ2VyIiAvPg0KICAgIDxqYXIgaHJlZj0ibGliXGRwb3RhcGkuamFyIiBzaXplPSI2NzQ5NSIgZG93bmxvYWQ9ImVhZ2VyIiAvPg0KICAgIDxqYXIgaHJlZj0ibGliXGRwb3RqbmkuamFyIiBzaXplPSIxNDE4MCIgZG93bmxvYWQ9ImVhZ2VyIiAvPg0KICA8L3Jlc291cmNlcz4NCjxzZWN1cml0eT4NCiAgPGFsbC1wZXJtaXNzaW9ucy8+DQo8L3NlY3VyaXR5Pg0KICA8YXBwbGV0LWRlc2MgIHdpZHRoPSI4MDAiIGhlaWdodD0iNjAwIiBtYWluLWNsYXNzPSJjb20uamF2YWZ4Lm1haW4uTm9KYXZhRlhGYWxsYmFjayIgIG5hbWU9IkJpb21ldHJ5IiA+DQogICAgPHBhcmFtIG5hbWU9InJlcXVpcmVkRlhWZXJzaW9uIiB2YWx1ZT0iOC4wKyIvPg0KICA8L2FwcGxldC1kZXNjPg0KICA8amZ4OmphdmFmeC1kZXNjICB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgbWFpbi1jbGFzcz0iYmlvbWV0cnkuTWFpbiIgIG5hbWU9IkJpb21ldHJ5IiAvPg0KICA8dXBkYXRlIGNoZWNrPSJhbHdheXMiLz4NCjwvam5scD4NCg==';
+      var jnlp_content = 'PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjxqbmxwIHNwZWM9IjEuMCIgeG1sbnM6amZ4PSJodHRwOi8vamF2YWZ4LmNvbSIgaHJlZj0iQmlvbWV0cnkuam5scCI+DQogIDxpbmZvcm1hdGlvbj4NCiAgICA8dGl0bGU+QmlvbWV0cnk8L3RpdGxlPg0KICAgIDx2ZW5kb3I+Q0hVS1dVREk8L3ZlbmRvcj4NCiAgICA8ZGVzY3JpcHRpb24+bnVsbDwvZGVzY3JpcHRpb24+DQogICAgPG9mZmxpbmUtYWxsb3dlZC8+DQogIDwvaW5mb3JtYXRpb24+DQogIDxyZXNvdXJjZXM+DQogICAgPGoyc2UgdmVyc2lvbj0iMS42KyIgaHJlZj0iaHR0cDovL2phdmEuc3VuLmNvbS9wcm9kdWN0cy9hdXRvZGwvajJzZSIvPg0KICAgIDxqYXIgaHJlZj0iQmlvbWV0cnkuamFyIiBzaXplPSI2MjQzNyIgZG93bmxvYWQ9ImVhZ2VyIiAvPg0KICAgIDxqYXIgaHJlZj0ibGliXGRwb3RhcGkuamFyIiBzaXplPSI2NzQ5MyIgZG93bmxvYWQ9ImVhZ2VyIiAvPg0KICAgIDxqYXIgaHJlZj0ibGliXGRwb3RqbmkuamFyIiBzaXplPSIxNDE4MCIgZG93bmxvYWQ9ImVhZ2VyIiAvPg0KICAgIDxqYXIgaHJlZj0ibGliXG15c3FsLWNvbm5lY3Rvci1qYXZhLTUuMS40Mi1iaW4uamFyIiBzaXplPSIxMDM2MDMwIiBkb3dubG9hZD0iZWFnZXIiIC8+DQogIDwvcmVzb3VyY2VzPg0KPHNlY3VyaXR5Pg0KICA8YWxsLXBlcm1pc3Npb25zLz4NCjwvc2VjdXJpdHk+DQogIDxhcHBsZXQtZGVzYyAgd2lkdGg9IjgwMCIgaGVpZ2h0PSI2MDAiIG1haW4tY2xhc3M9ImNvbS5qYXZhZngubWFpbi5Ob0phdmFGWEZhbGxiYWNrIiAgbmFtZT0iQmlvbWV0cnkiID4NCiAgICA8cGFyYW0gbmFtZT0icmVxdWlyZWRGWFZlcnNpb24iIHZhbHVlPSI4LjArIi8+DQogIDwvYXBwbGV0LWRlc2M+DQogIDxqZng6amF2YWZ4LWRlc2MgIHdpZHRoPSI4MDAiIGhlaWdodD0iNjAwIiBtYWluLWNsYXNzPSJiaW9tZXRyeS5NYWluIiAgbmFtZT0iQmlvbWV0cnkiIC8+DQogIDx1cGRhdGUgY2hlY2s9ImFsd2F5cyIvPg0KPC9qbmxwPg0K';
       function launchApplication(jnlpfile) {
         dtjava.launch({
-            url: 'Biometry.jnlp',
+            url: '{{asset('biomet/Biometry.jnlp')}}',
             jnlp_content: jnlp_content
           },
           {
@@ -272,19 +274,12 @@
         dtjava.embed(
           {
             id: 'biometry',
-            url: 'Biometry.jnlp',
+            url: '{{asset('biomet/Biometry.jnlp')}}',
             placeholder: 'biomet-container',
             width: '600',
             height: '232',
             jnlp_content: jnlp_content,
-            params: {
-              mode: "Verification",
-              choice: "Right",
-              url: "127.0.0.1/biomet/enroll_fp.php",
-              userID: "",
-              template: ""
-
-            }
+            params: <?= json_encode($api_data, JSON_FORCE_OBJECT); ?>
           },
           {
             javafx: '8.0+'

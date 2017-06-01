@@ -1,4 +1,4 @@
-@extends('layouts.deo');
+@extends('layouts.deo')
 @section('content')
     <div class="container">
         <div class="row">
@@ -8,7 +8,7 @@
                     <span class="pull-right">
                         <!-- Split button -->
                         <span class="btn-group btn-group-sm">
-                            <a href="{{route('app.enroll_idp')}}" class="btn btn-primary">Enroll New IDP</a>
+                            <a href="{{route('deo.enroll_idp')}}" class="btn btn-primary">Enroll New IDP</a>
                         </span>
                     </span>
                 </h2>
@@ -24,7 +24,7 @@
                     <th width="5%">Sex</th>
                     <th width="10%">Age</th>
                     <th width="5%">Height</th>
-                    <th width="8%">Relations</th>
+                    <th width="8%">&hellip;</th>
                     <th width="5%">&hellip;</th>
                 </tr>
                 </thead>
@@ -38,7 +38,7 @@
                         <td>{{$person->sex}}</td>
                         <td>{{$person->age}}</td>
                         <td>{{$person->height}}</td>
-                        <td>--</td>
+                        <td><a  href="{{route('deo.verify_idp',['id'=>$person->id])}}" class="btn btn-sm btn-primary">Verify</a></td>
                         <td>---</td>
                     </tr>
                 @endforeach

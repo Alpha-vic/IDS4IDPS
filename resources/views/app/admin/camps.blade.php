@@ -41,7 +41,9 @@
                         <th width="5%">#</th>
                         <th width="10%">Code</th>
                         <th>Name</th>
+                        <th>LGA</th>
                         <th width="25%">Address</th>
+                        <th><span class="glyphicon glyphicon-edit"></span></th>
                         <th width="3%"><input type="checkbox" class="toggle-btn" data-toggle="input.togglable"></th>
                     </tr>
                     </thead>
@@ -52,12 +54,14 @@
                             <td>{{$sn++}}</td>
                             <td>{{$camp->code}}</td>
                             <td>{{$camp->name}}</td>
+                            <td>{{$camp->lga->name}}</td>
                             <td>{{$camp->address}}</td>
+                            <td><a href="#!"><span class="glyphicon glyphicon-edit"></span></a></td>
                             <td><input name="id[]" type="checkbox" value="{{$camp->id}}" class="togglable"></td>
                         </tr>
                     @endforeach
                     <tr>
-                        <td colspan="5" class="text-center">{{$camps->links()}}</td>
+                        <td colspan="7" class="text-center">{{$camps->links()}}</td>
                     </tr>
                     </tbody>
                 </table>

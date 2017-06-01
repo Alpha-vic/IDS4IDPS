@@ -13,7 +13,6 @@ Route::group(['namespace' => 'Pages'], function () {
     //------------ Generic App-Page Routes -----------------------------------------
     Route::group(['as' => 'app.'], function () {
         Route::get('/', ['as' => 'home', 'uses' => 'AppController@index']);
-        Route::get('enroll', ['as' => 'enroll_idp', 'uses' => 'AppController@enroll'])->middleware(['deo' => 'auth.deo']);
     });
 
     Route::group(['middleware' => ['auth' => 'auth']], function () {
@@ -36,6 +35,8 @@ Route::group(['namespace' => 'Pages'], function () {
             Route::get('persons', ['as' => 'persons', 'uses' => 'DeoController@persons']);
             Route::get('camps', ['as' => 'camps', 'uses' => 'DeoController@camps']);
             Route::get('organizations', ['as' => 'organizations', 'uses' => 'DeoController@organizations']);
+            Route::get('persons/enroll', ['as' => 'enroll_idp', 'uses' => 'DeoController@enrollPerson']);
+            Route::get('persons/verify/{id}', ['as' => 'verify_idp', 'uses' => 'DeoController@verifyPerson']);
         });
 
         Route::group(['as' => 'account.', 'prefix' => 'account'], function () {

@@ -10,7 +10,7 @@
                         <span class="pull-right">
                         <!-- Split button -->
                         <div class="btn-group btn-group-sm">
-                            <a href="{{route('app.enroll_idp')}}" class="btn btn-primary">New IDP Record</a>
+                            <a href="{{route('deo.enroll_idp')}}" class="btn btn-primary">New IDP Record</a>
                             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false">
                                 &nbsp;<span class="caret"></span>
