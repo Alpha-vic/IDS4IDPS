@@ -37,13 +37,36 @@ class DeoController extends Controller
     }
 
     /**
+     * @param Request $request
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function persons()
+    public function persons(Request $request)
     {
-        $persons = Person::where('status', Person::STATUS_ENROLLED)->orderBy('first_name')->orderBy('last_name')->paginate(10);
+        if ($request->has('camp') and is_object($camp = Camp::find($request->input('camp')))) {
+            $persons = Person::where('status', Person::STATUS_ENROLLED)
+                             ->where('camp_id', $camp->id)
+                             ->orderBy('first_name')
+                             ->orderBy('last_name')
+                             ->paginate(20);
 
-        return view('app.deo.persons', ['persons' => $persons]);
+            return view('app.deo.persons', [
+                'camp'    => $camp,
+                'persons' => $persons,
+                'camps'   => Camp::all(),
+            ]);
+        }
+
+        $persons = Person::where('status', Person::STATUS_ENROLLED)
+                         ->orderBy('first_name')
+                         ->orderBy('last_name')
+                         ->paginate(20);
+
+        return view('app.deo.persons', [
+            'persons' => $persons,
+            'camp'    => null,
+            'camps'   => Camp::all(),
+        ]);
     }
 
     /**
@@ -71,11 +94,11 @@ class DeoController extends Controller
         $API_DATA = $this->appletArgs($request, $IDP);
 
         return response()->view('app.deo.enroll-person', [
-            'camps' => $camps,
-            'states' => $states,
-            'lgas' => $lgas,
-            'IDP' => $IDP,
-            'api_data' => $API_DATA
+            'camps'    => $camps,
+            'states'   => $states,
+            'lgas'     => $lgas,
+            'IDP'      => $IDP,
+            'api_data' => $API_DATA,
         ])->withCookie('TMP_IDP_ID', $IDP->id);
     }
 
@@ -92,24 +115,24 @@ class DeoController extends Controller
         $API_DATA['choice'] = 'Left';
 
         return response()->view('app.deo.verify-person', [
-            'IDP' => $IDP,
-            'api_data' => $API_DATA
+            'IDP'      => $IDP,
+            'api_data' => $API_DATA,
         ]);
     }
 
     protected function appletArgs(Request $request, Person $person)
     {
         return [
-            'mode' => 'Enrollment',
-            'host' => $request->getHttpHost(),
-            'username' => env('DB_USERNAME', 'root'),
-            'password' => env('DB_PASSWORD', ''),
-            'db_name' => env('DB_DATABASE', 'homestead'),
-            'db_table' => 'persons',
-            'left_column' => 'left_thumb',
+            'mode'         => 'Enrollment',
+            'host'         => $request->getHttpHost(),
+            'username'     => env('DB_USERNAME', 'root'),
+            'password'     => env('DB_PASSWORD', ''),
+            'db_name'      => env('DB_DATABASE', 'homestead'),
+            'db_table'     => 'persons',
+            'left_column'  => 'left_thumb',
             'right_column' => 'right_thumb',
-            'key_column' => 'id',
-            'val' => (string)$person->id
+            'key_column'   => 'id',
+            'val'          => (string)$person->id,
         ];
     }
 
