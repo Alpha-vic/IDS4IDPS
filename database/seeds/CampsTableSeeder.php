@@ -16,7 +16,7 @@ class CampsTableSeeder extends Seeder
         /**
          * @var LGA $LGA
          */
-        foreach (LGA::all()->random(20) as $LGA) {
+        foreach (LGA::all()->random(4) as $LGA) {
             factory(Camp::class, rand(1,3))->create(['lga_id' => $LGA->id]);
         }
     }

@@ -18,10 +18,10 @@ class Person extends Model
         'first_name', 'middle_name', 'last_name',
         'birth_date', 'sex', 'height', 'photo', 'description',
         'code', 'lga_id', 'camp_id', 'status',
-        'left_thumb', 'right_thumb'
+        'left_thumb', 'right_thumb',
     ];
     protected $casts    = ['birth_date' => 'date'];
-    protected $appends  = ['state', 'age'];
+    protected $appends  = ['state', 'age', 'photoUrl'];
 
     const STATUS_TMP      = 0;
     const STATUS_ENROLLED = 1;

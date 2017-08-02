@@ -17,8 +17,9 @@ class PersonsTableSeeder extends Seeder
         $camps = Camp::all();
         $lgas = LGA::all();
         factory(Person::class, 50)->create()->each(function (Person $person) use ($camps, $lgas){
-            $person->camp()->associate($camps->random(1));
-            $person->lga()->associate($lgas->random(1));
+            $person->camp()->associate($camps->random()->id);
+            $person->lga()->associate($lgas->random()->id);
+            $person->save();
         });
     }
 
