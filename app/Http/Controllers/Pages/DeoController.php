@@ -23,7 +23,12 @@ class DeoController extends Controller
      */
     public function dashboard()
     {
-        return view('app.deo.dashboard');
+        $data = [
+            'idps'=>Person::where('status',Person::STATUS_ENROLLED)->count(),
+            'camps'=>Camp::all()->count(),
+            'organizations'=>Organization::all()->count(),
+        ];
+        return view('app.deo.dashboard',$data);
     }
 
     /**
