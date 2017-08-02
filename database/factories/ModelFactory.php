@@ -129,10 +129,8 @@ $factory->define(Person::class, function (Faker\Generator $faker) {
         'height' => $faker->randomFloat(2, 0.5, 10),
         'blood_group' => $faker->randomElement(['A', 'B', 'AB', 'O']),
         'photo' => Person::defaultPhotoUrl(),
-        'email' => $faker->email,
-        'phone' => $faker->numerify('070########'),
         'description' => $faker->realText(500),
-        'code' => uniqid(),
+        'code' => $faker->unique()->randomNumber(6),
         'status' => Person::STATUS_ENROLLED
     ];
 });

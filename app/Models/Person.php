@@ -17,7 +17,7 @@ class Person extends Model
     protected $fillable = [
         'first_name', 'middle_name', 'last_name',
         'birth_date', 'sex', 'height', 'photo', 'description',
-        'code', 'lga_id', 'camp_id', 'email', 'phone', 'status',
+        'code', 'lga_id', 'camp_id', 'status',
         'left_thumb', 'right_thumb'
     ];
     protected $casts    = ['birth_date' => 'date'];
@@ -26,6 +26,14 @@ class Person extends Model
     const STATUS_TMP      = 0;
     const STATUS_ENROLLED = 1;
     const IMAGE_DIR       = 'public'.DS.'idp-photos';
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        if (!$this->exists) {
+            $this->attributes['code'] = strtoupper(str_random(12));
+        }
+    }
 
     public function relationships()
     {

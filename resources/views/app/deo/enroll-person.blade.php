@@ -29,7 +29,8 @@
                         <div class="form-group">
                             <label for="f-name" class="col-sm-2 control-label">Names</label>
                             <div class="col-sm-3">
-                                <input type="text" maxlength="255" class="form-control" id="f-name" name="first_name" value="{{$IDP->first_name}}"
+                                <input type="text" maxlength="255" class="form-control" id="f-name" name="first_name"
+                                       value="{{$IDP->first_name}}"
                                        placeholder="First name" required>
                             </div>
                             <div class="col-sm-3">
@@ -39,7 +40,8 @@
                             </div>
                             <div class="col-sm-4">
                                 <label for="l-name" class="sr-only">Last Name</label>
-                                <input type="text" maxlength="255" class="form-control" id="l-name" name="last_name" value="{{$IDP->last_name}}"
+                                <input type="text" maxlength="255" class="form-control" id="l-name" name="last_name"
+                                       value="{{$IDP->last_name}}"
                                        placeholder="Last name" required>
                             </div>
                         </div>
@@ -66,11 +68,13 @@
                         <div class="form-group">
                             <label for="birth-date" class="col-sm-2 control-label">Date of Birth</label>
                             <div class="col-sm-4">
-                                <input type="date" class="form-control" id="birth-date" name="birth_date" required>
+                                <input type="date" class="form-control" id="birth-date" name="birth_date"
+                                       placeholder="yyyy-mm-dd" required>
                             </div>
                             <label for="height" class="col-sm-2 control-label">Height (ft.)</label>
                             <div class="col-sm-4">
-                                <input type="number" max="12" min="0.5" step="0.01" class="form-control" id="height" name="height"
+                                <input type="number" max="12" min="0.5" step="0.01" class="form-control" id="height"
+                                       name="height"
                                        value="{{$IDP->height}}">
                             </div>
                         </div>
@@ -81,7 +85,8 @@
                                     <option></option>
                                     @if(is_object($IDP->state))
                                         @foreach($states as $state)
-                                            <option value="{{$state->id}}" @if($state->id==$IDP->state->id) selected @endif>{{$state->name}}</option>
+                                            <option value="{{$state->id}}"
+                                                    @if($state->id==$IDP->state->id) selected @endif>{{$state->name}}</option>
                                         @endforeach
                                     @else
                                         @foreach($states as $state)
@@ -96,7 +101,8 @@
                                     <option></option>
                                     @if(is_object($IDP->lga))
                                         @foreach($lgas as $lga)
-                                            <option value="{{$lga->id}}" @if($lga->id==$IDP->lga->id) selected @endif>{{$lga->name}}</option>
+                                            <option value="{{$lga->id}}"
+                                                    @if($lga->id==$IDP->lga->id) selected @endif>{{$lga->name}}</option>
                                         @endforeach
                                     @else
                                         @foreach($lgas as $lga)
@@ -107,21 +113,10 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="email" class="col-sm-2 control-label">Email</label>
-                            <div class="col-sm-4">
-                                <input type="email" maxlength="255" class="form-control" id="email" name="email" value="{{$IDP->email}}"
-                                       placeholder="name@domain.com">
-                            </div>
-                            <label for="phone" class="col-sm-2 control-label">Mobile Phone</label>
-                            <div class="col-sm-4">
-                                <input type="tel" maxlength="255" class="form-control" id="phone" name="phone" value="{{$IDP->phone}}"
-                                       placeholder="+234 xxx xxx xxxx">
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <label for="description" class="col-sm-2 control-label">Description</label>
                             <div class="col-sm-10">
-                                <textarea rows="4" class="form-control" id="description" name="description">{{$IDP->description}}</textarea>
+                                <textarea rows="4" class="form-control" id="description"
+                                          name="description">{{$IDP->description}}</textarea>
                             </div>
                         </div>
                     </fieldset>
@@ -130,7 +125,8 @@
                         <div class="row bg-info">
                             <div class="col-sm-3">
                                 <div class="bg-info pic-container">
-                                    <img class="img-responsive img-thumbnail" itemprop="image" src="{{$IDP->photoUrl}}" alt="{{$IDP->name()}}"
+                                    <img class="img-responsive img-thumbnail" itemprop="image" src="{{$IDP->photoUrl}}"
+                                         alt="{{$IDP->name()}}"
                                          id="user-image"/>
                                     <div class="after center-align padding-top-4em">
                                         <div>
@@ -257,6 +253,7 @@
     <script src="{{asset('biomet/assets/dtjava.js')}}" type="text/javascript"></script>
     <script>
       var jnlp_content = 'PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjxqbmxwIHNwZWM9IjEuMCIgeG1sbnM6amZ4PSJodHRwOi8vamF2YWZ4LmNvbSIgaHJlZj0iQmlvbWV0cnkuam5scCI+DQogIDxpbmZvcm1hdGlvbj4NCiAgICA8dGl0bGU+QmlvbWV0cnk8L3RpdGxlPg0KICAgIDx2ZW5kb3I+Q0hVS1dVREk8L3ZlbmRvcj4NCiAgICA8ZGVzY3JpcHRpb24+bnVsbDwvZGVzY3JpcHRpb24+DQogICAgPG9mZmxpbmUtYWxsb3dlZC8+DQogIDwvaW5mb3JtYXRpb24+DQogIDxyZXNvdXJjZXM+DQogICAgPGoyc2UgdmVyc2lvbj0iMS42KyIgaHJlZj0iaHR0cDovL2phdmEuc3VuLmNvbS9wcm9kdWN0cy9hdXRvZGwvajJzZSIvPg0KICAgIDxqYXIgaHJlZj0iQmlvbWV0cnkuamFyIiBzaXplPSI2MjQzNSIgZG93bmxvYWQ9ImVhZ2VyIiAvPg0KICAgIDxqYXIgaHJlZj0ibGliXGRwb3RhcGkuamFyIiBzaXplPSI2NzQ5MCIgZG93bmxvYWQ9ImVhZ2VyIiAvPg0KICAgIDxqYXIgaHJlZj0ibGliXGRwb3RqbmkuamFyIiBzaXplPSIxNDE3OSIgZG93bmxvYWQ9ImVhZ2VyIiAvPg0KICAgIDxqYXIgaHJlZj0ibGliXG15c3FsLWNvbm5lY3Rvci1qYXZhLTUuMS40Mi1iaW4uamFyIiBzaXplPSIxMDM2MDMwIiBkb3dubG9hZD0iZWFnZXIiIC8+DQogIDwvcmVzb3VyY2VzPg0KPHNlY3VyaXR5Pg0KICA8YWxsLXBlcm1pc3Npb25zLz4NCjwvc2VjdXJpdHk+DQogIDxhcHBsZXQtZGVzYyAgd2lkdGg9IjgwMCIgaGVpZ2h0PSI2MDAiIG1haW4tY2xhc3M9ImNvbS5qYXZhZngubWFpbi5Ob0phdmFGWEZhbGxiYWNrIiAgbmFtZT0iQmlvbWV0cnkiID4NCiAgICA8cGFyYW0gbmFtZT0icmVxdWlyZWRGWFZlcnNpb24iIHZhbHVlPSI4LjArIi8+DQogIDwvYXBwbGV0LWRlc2M+DQogIDxqZng6amF2YWZ4LWRlc2MgIHdpZHRoPSI4MDAiIGhlaWdodD0iNjAwIiBtYWluLWNsYXNzPSJiaW9tZXRyeS5NYWluIiAgbmFtZT0iQmlvbWV0cnkiIC8+DQogIDx1cGRhdGUgY2hlY2s9ImFsd2F5cyIvPg0KPC9qbmxwPg0K';
+
       function launchApplication(jnlpfile) {
         dtjava.launch({
             url: '{{asset('biomet/Biometry.jnlp')}}',
@@ -287,6 +284,7 @@
           {}
         );
       }
+
       <!-- Embed FX application into web page once page is loaded -->
       dtjava.addOnloadCallback(javafxEmbedBiometry, false);
     </script>

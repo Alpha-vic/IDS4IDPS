@@ -21,17 +21,16 @@ class PersonController extends Controller
     public function update(Request $request)
     {
         $this->validate($request, [
-            'id' => 'required|exists:persons,id',
-            'camp_id' => 'required|exists:camps,id',
-            'first_name' => 'required|max:255',
-            'last_name' => 'required|max:255',
-            'sex' => 'required|in:M,F',
+            'id'          => 'required|exists:persons,id',
+            'camp_id'     => 'required|exists:camps,id',
+            'first_name'  => 'required|max:255',
+            'last_name'   => 'required|max:255',
+            'sex'         => 'required|in:M,F',
             'blood_group' => 'required|in:A,B,AB,O',
-            'birth_date' => 'required|before:'.date('Y-m-d'),
-            'height' => 'required|numeric|min:0',
-            'state_id' => 'required|exists:states,id',
-            'lga_id' => 'required|exists:lgas,id',
-            'email' => 'email|max:255'
+            'birth_date'  => 'required|before:'.date('Y-m-d'),
+            'height'      => 'required|numeric|min:0',
+            'state_id'    => 'required|exists:states,id',
+            'lga_id'      => 'required|exists:lgas,id',
         ]);
 
         $in = $request->input();
@@ -41,7 +40,12 @@ class PersonController extends Controller
         $person = Person::find($in['id']);
         $in['status'] = Person::STATUS_ENROLLED;
         if ($person->update($in)) {
-            return response()->json(['status' => true, 'message' => 'IDP profile enrolled successfully.'])->withCookie('TMP_IDP_ID', null);
+            if (empty($person->left_thumb) or empty($person->right_thumb) or empty($person->photo)) {
+                return response()->json(['status' => false, 'message' => 'IDP photo and fingerprints required.']);
+            }
+
+            return response()->json(['status' => true, 'message' => 'IDP profile enrolled successfully.'])
+                             ->withCookie('TMP_IDP_ID', null);
         }
 
         return ['status' => false, 'message' => 'Something went wrong. Refresh the page and try again.'];
@@ -65,8 +69,8 @@ class PersonController extends Controller
                 $path = $IDP->getPhotoUrl();
 
                 return [
-                    'status' => true,
-                    'data' => ['url' => $path],
+                    'status'  => true,
+                    'data'    => ['url' => $path],
                     'message' => 'Upload Successful',
                 ];
             }
