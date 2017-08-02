@@ -233,6 +233,7 @@
       input.change(function () {
         previewImage(this, previewer);
         $('.btn', modalWindow).prop('disabled', false);
+        $('applet#biometry').hide();
         modalWindow.modal('show');
       });
       modalWindow.on('shown.bs.modal', function () {
@@ -243,6 +244,9 @@
           minCropBoxWidth: $(window).width() >= 1024 ? 100 : prefWidth,
           autoCropArea: 0.1
         });
+      });
+      modalWindow.on('hide.bs.modal',function(){
+        $('applet#biometry').show();
       });
       initButtons(previewer, prefWidth, prefHeight, handlerUrl, modalWindow, input, function (formData) {
         formData.append('id', $('input[name=id]').val())
