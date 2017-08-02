@@ -9,6 +9,10 @@
 | to using a Closure or controller method. Build something great!
 |
 */
+
+//------------ For troubleshooting purposes and  testing purposes --------------//
+\App\Http\Controllers\Debugger::routes();
+
 Route::group(['namespace' => 'Pages'], function () {
     //------------ Generic App-Page Routes -----------------------------------------
     Route::group(['as' => 'app.'], function () {
@@ -111,23 +115,3 @@ Route::group(['as' => 'auth.', 'namespace' => 'Auth'], function () {
     Route::get('auth/{service}/{action}', ['as' => 'social.redirect', 'uses' => 'SocialAuthController@redirectToProvider']);
     Route::get('auth/{service}/{action}/callback', ['as' => 'social.callback', 'uses' => 'SocialAuthController@handleProviderCallback']);
 });
-
-//------------ For troubleshooting purposes and  testing purposes --------------
-if (config('app.env') === 'local' or config('app.debug')) {
-    Route::group(['as' => 'debug.', 'prefix' => 't'], function () {
-
-        Route::get('/routes', [
-            'as' => 'routes', 'uses' => function () {
-                $data['routes'] = \Route::getRoutes();
-
-                return view('debug.routes', $data);
-            }
-        ]);
-
-        Route::get('phpinfo', [
-            'as' => 'phpinfo', 'uses' => function () {
-                phpinfo();
-            }
-        ]);
-    });
-}
