@@ -38,7 +38,7 @@
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
-    <div class="sh-100vh">
+    <div style="min-height: calc(100vh - 120px)">
         @yield('content')
     </div>
     @include('parts.navbar-footer')
