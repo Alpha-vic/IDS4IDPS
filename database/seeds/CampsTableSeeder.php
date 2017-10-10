@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\LGA;
 use App\Models\Camp;
+use App\Models\LGA;
 use Illuminate\Database\Seeder;
 
 class CampsTableSeeder extends Seeder
@@ -17,7 +17,7 @@ class CampsTableSeeder extends Seeder
          * @var LGA $LGA
          */
         foreach (LGA::all()->random(4) as $LGA) {
-            factory(Camp::class, rand(1,3))->create(['lga_id' => $LGA->id]);
+            factory(Camp::class)->create(['lga_id' => $LGA->id]);
         }
     }
 }
