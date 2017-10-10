@@ -37,8 +37,8 @@
 </form>
 <script type="text/javascript">
   $(function () {
-    $('#logout-button').click(function () {
-      event.preventDefault();
+    $('#logout-button').click(function (e) {
+      e.preventDefault();
       $('#logout-form').submit();
     });
 
